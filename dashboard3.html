@@ -1,695 +1,670 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дашборд реализации целей и критериев успеха пилота - Северсталь</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<title>Дашборд реализации целей и критериев успеха пилота - Северсталь</title> <style> * { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: 
+            linear-gradient(rgba(0, 51, 102, 0.88), rgba(0, 51, 102, 0.88)),
+            url('https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=1920&q=80') center/cover fixed;
+        color: #333;
+        padding: 20px;
+        min-height: 100vh;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: 
-                linear-gradient(rgba(0, 51, 102, 0.88), rgba(0, 51, 102, 0.88)),
-                url('https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=1920&q=80') center/cover fixed;
-            color: #333;
-            padding: 20px;
-            min-height: 100vh;
-        }
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+    .header {
+        background: linear-gradient(135deg, #003366 0%, #0051a3 100%);
+        color: white;
+        padding: 40px 50px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 40px rgba(0, 51, 102, 0.4);
+        border: 3px solid #0066cc;
+        position: relative;
+        overflow: hidden;
+    }
 
-        .header {
-            background: linear-gradient(135deg, #003366 0%, #0051a3 100%);
-            color: white;
-            padding: 40px 50px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 51, 102, 0.4);
-            border: 3px solid #0066cc;
-            position: relative;
-            overflow: hidden;
-        }
+    .header h1 {
+        font-size: 2.5em;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 1;
+    }
 
-        .header h1 {
-            font-size: 2.5em;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-        }
+    .stats-overview {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
 
-        .stats-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        border-left: 5px solid #003366;
+        transition: transform 0.3s ease;
+    }
 
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            border-left: 5px solid #003366;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
+    .stat-card h3 {
+        color: #003366;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
 
-        .stat-card h3 {
-            color: #003366;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
+    .stat-value {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #003366;
+    }
 
-        .stat-value {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #003366;
-        }
+    .goal-section {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        border: 2px solid #e6f2ff;
+    }
 
-        .goal-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
-            border: 2px solid #e6f2ff;
-        }
+    .goal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #003366;
+    }
 
-        .goal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #003366;
-        }
+    .goal-title {
+        font-size: 1.8em;
+        color: #003366;
+        font-weight: bold;
+        flex: 1;
+    }
 
-        .goal-title {
-            font-size: 1.8em;
-            color: #003366;
-            font-weight: bold;
-            flex: 1;
-        }
+    .goal-progress {
+        font-size: 2em;
+        font-weight: bold;
+        color: #0066cc;
+        margin-left: 20px;
+    }
 
-        .goal-progress {
-            font-size: 2em;
-            font-weight: bold;
-            color: #0066cc;
-            margin-left: 20px;
-        }
+    .status-selector {
+        display: flex;
+        gap: 10px;
+        margin-left: 20px;
+    }
 
-        .status-selector {
-            display: flex;
-            gap: 10px;
-            margin-left: 20px;
-        }
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
 
-        .status-badge {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
+    .status-badge.not-started {
+        background: #e0e0e0;
+        color: #666;
+    }
 
-        .status-badge.not-started {
-            background: #e0e0e0;
-            color: #666;
-        }
+    .status-badge.in-progress {
+        background: #fff3cd;
+        color: #856404;
+        border-color: #ffc107;
+    }
 
-        .status-badge.in-progress {
-            background: #fff3cd;
-            color: #856404;
-            border-color: #ffc107;
-        }
+    .status-badge.completed {
+        background: #d4edda;
+        color: #155724;
+        border-color: #28a745;
+    }
 
-        .status-badge.completed {
-            background: #d4edda;
-            color: #155724;
-            border-color: #28a745;
-        }
+    .status-badge.active {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
 
-        .status-badge.active {
-            transform: scale(1.1);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
+    .progress-bar-container {
+        background: #e6f2ff;
+        height: 30px;
+        border-radius: 15px;
+        overflow: hidden;
+        margin: 20px 0;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-        .progress-bar-container {
-            background: #e6f2ff;
-            height: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 20px 0;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-        }
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #003366 0%, #0066cc 100%);
+        transition: width 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+        color: white;
+        font-weight: bold;
+    }
 
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #003366 0%, #0066cc 100%);
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            color: white;
-            font-weight: bold;
-        }
+    .criteria-section {
+        margin-top: 25px;
+    }
 
-        .criteria-section {
-            margin-top: 25px;
-        }
+    .criterion {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #0066cc;
+    }
 
-        .criterion {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #0066cc;
-        }
+    .criterion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
 
-        .criterion-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+    .criterion-title {
+        font-weight: bold;
+        color: #003366;
+        font-size: 1.1em;
+        flex: 1;
+    }
 
-        .criterion-title {
-            font-weight: bold;
-            color: #003366;
-            font-size: 1.1em;
-            flex: 1;
-        }
+    .criterion-progress {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: #0066cc;
+        margin-left: 15px;
+    }
 
-        .criterion-progress {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #0066cc;
-            margin-left: 15px;
-        }
+    .employee-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+    }
 
-        .employee-list, .format-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
+    .employee-item {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
 
-        .employee-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+    .employee-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .employee-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .employee-name {
+        font-weight: 600;
+        color: #333;
+    }
 
-        .employee-name {
-            font-weight: 600;
-            color: #333;
-        }
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .checkbox-label {
+        font-size: 0.85em;
+        color: #666;
+    }
 
-        .checkbox-label {
-            font-size: 0.85em;
-            color: #666;
-        }
+    input[type="checkbox"] {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        accent-color: #003366;
+    }
 
-        input[type="checkbox"] {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            accent-color: #003366;
-        }
+    input[type="text"], input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1em;
+        margin-top: 10px;
+    }
 
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            margin-top: 10px;
-        }
+    .weekly-data {
+        margin-top: 20px;
+    }
 
-        .weekly-data {
-            margin-top: 20px;
-        }
+    .week-entry {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+        align-items: center;
+    }
 
-        .week-entry {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
+    .week-entry input {
+        flex: 1;
+        margin-top: 0;
+    }
 
-        .week-entry input {
-            flex: 1;
-            margin-top: 0;
-        }
+    .delete-week-btn {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+    }
 
-        .delete-week-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .add-week-btn {
+        background: #003366;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+    }
 
-        .add-week-btn {
-            background: #003366;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .chart-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        min-height: 350px;
+    }
 
-        .chart-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            min-height: 350px;
-        }
+    .chart-bar-wrapper {
+        display: inline-block;
+        vertical-align: bottom;
+        text-align: center;
+        margin: 0 10px;
+    }
 
-        .chart-bar-wrapper {
-            display: inline-block;
-            vertical-align: bottom;
-            text-align: center;
-            margin: 0 10px;
-        }
+    .chart-bar {
+        width: 80px;
+        border-radius: 8px 8px 0 0;
+        position: relative;
+    }
 
-        .chart-bar {
-            width: 80px;
-            border-radius: 8px 8px 0 0;
-            position: relative;
-        }
+    .chart-value {
+        color: white;
+        font-weight: bold;
+        padding: 5px;
+        font-size: 0.9em;
+    }
 
-        .chart-value {
-            color: white;
-            font-weight: bold;
-            padding: 5px;
-            font-size: 0.9em;
-        }
+    .chart-diff {
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.8em;
+        font-weight: bold;
+        white-space: nowrap;
+    }
 
-        .chart-diff {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.8em;
-            font-weight: bold;
-            white-space: nowrap;
-        }
+    .chart-diff.positive { color: #28a745; }
+    .chart-diff.negative { color: #dc3545; }
 
-        .chart-diff.positive { color: #28a745; }
-        .chart-diff.negative { color: #dc3545; }
+    .chart-label {
+        font-size: 0.85em;
+        margin-top: 8px;
+        color: #666;
+    }
 
-        .chart-label {
-            font-size: 0.85em;
-            margin-top: 8px;
-            color: #666;
-        }
+    .admin-mode-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        padding: 15px 25px;
+        border-radius: 50px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 1000;
+        border: 2px solid #003366;
+    }
 
-        .admin-mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
-            border: 2px solid #003366;
-        }
+    .simple-checkbox {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
 
-        .simple-checkbox {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+    .simple-checkbox label {
+        font-weight: 500;
+        flex: 1;
+    }
 
-        .simple-checkbox label {
-            font-weight: 500;
-            flex: 1;
-        }
+    .view-only-banner {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: #000;
+        padding: 20px 30px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.1em;
+        display: none;
+    }
 
-        .view-only-banner {
-            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-            color: #000;
-            padding: 20px 30px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1em;
-            display: none;
-        }
+    .view-only-banner.show { display: block; }
 
-        .view-only-banner.show { display: block; }
+    .sync-status {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        font-size: 0.9em;
+        z-index: 999;
+        border: 2px solid #0066cc;
+        display: none;
+    }
 
-        .sync-status {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            font-size: 0.9em;
-            z-index: 999;
-            border: 2px solid #0066cc;
-            display: none;
-        }
+    .sync-status.show { display: block; }
+    .sync-status.syncing { border-color: #ffc107; background: #fff3cd; }
+    .sync-status.synced { border-color: #28a745; background: #d4edda; }
+    .sync-status.error { border-color: #dc3545; background: #f8d7da; }
 
-        .sync-status.show { display: block; }
-        .sync-status.syncing { border-color: #ffc107; background: #fff3cd; }
-        .sync-status.synced { border-color: #28a745; background: #d4edda; }
-        .sync-status.error { border-color: #dc3545; background: #f8d7da; }
+    .readonly * {
+        pointer-events: none !important;
+        opacity: 0.7 !important;
+    }
 
-        .readonly * {
-            pointer-events: none !important;
-            opacity: 0.7 !important;
-        }
+    @media (max-width: 768px) {
+        .header h1 { font-size: 1.8em; }
+        .goal-header { flex-direction: column; align-items: flex-start; }
+    }
+</style>
+Режим редактирования
+<div class="sync-status" id="syncStatus">
+    <span id="syncStatusText">🔄 Синхронизация...</span>
+</div>
 
-        @media (max-width: 768px) {
-            .header h1 { font-size: 1.8em; }
-            .goal-header { flex-direction: column; align-items: flex-start; }
-        }
-    </style>
-</head>
-<body>
-    <div class="admin-mode-toggle">
-        <label>
-            <input type="checkbox" id="adminMode" checked> Режим редактирования
-        </label>
+<div class="container">
+    <div class="view-only-banner" id="viewOnlyBanner">
+        👁️ РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА
     </div>
 
-    <div class="sync-status" id="syncStatus">
-        <span id="syncStatusText">🔄 Синхронизация...</span>
+    <div class="header">
+        <h1>📊 Дашборд реализации целей и критериев успеха пилота</h1>
     </div>
 
-    <div class="container">
-        <div class="view-only-banner" id="viewOnlyBanner">
-            👁️ РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА
+    <div class="stats-overview">
+        <div class="stat-card">
+            <h3>Общий прогресс</h3>
+            <div class="stat-value" id="totalProgress">0%</div>
+        </div>
+        <div class="stat-card">
+            <h3>Завершено целей</h3>
+            <div class="stat-value" id="completedGoals">0/4</div>
+        </div>
+        <div class="stat-card">
+            <h3>Критериев выполнено</h3>
+            <div class="stat-value" id="completedCriteria">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>Последнее обновление</h3>
+            <div class="stat-value" style="font-size: 1.2em;" id="lastUpdate">-</div>
+        </div>
+    </div>
+
+    <!-- Цель 1 -->
+    <div class="goal-section" id="goal1">
+        <div class="goal-header">
+            <div class="goal-title">Цель 1: Подключение к фиксации спроса</div>
+            <div class="status-selector">
+                <div class="status-badge not-started" onclick="setGoalStatus('goal1', 'not-started')" data-status="not-started">Не начато</div>
+                <div class="status-badge in-progress" onclick="setGoalStatus('goal1', 'in-progress')" data-status="in-progress">В работе</div>
+                <div class="status-badge completed" onclick="setGoalStatus('goal1', 'completed')" data-status="completed">Выполнено</div>
+            </div>
+            <div class="goal-progress" id="goal1Progress">0%</div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="goal1Bar" style="width: 0%"></div>
         </div>
 
-        <div class="header">
-            <h1>📊 Дашборд реализации целей и критериев успеха пилота</h1>
-        </div>
+        <p style="color: #666; margin-bottom: 20px;">
+            <strong>Цель:</strong> Подключить всех сотрудников к фиксации спроса из канала почта
+        </p>
 
-        <div class="stats-overview">
-            <div class="stat-card">
-                <h3>Общий прогресс</h3>
-                <div class="stat-value" id="totalProgress">0%</div>
-            </div>
-            <div class="stat-card">
-                <h3>Завершено целей</h3>
-                <div class="stat-value" id="completedGoals">0/4</div>
-            </div>
-            <div class="stat-card">
-                <h3>Критериев выполнено</h3>
-                <div class="stat-value" id="completedCriteria">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Последнее обновление</h3>
-                <div class="stat-value" style="font-size: 1.2em;" id="lastUpdate">-</div>
-            </div>
-        </div>
+        <div class="employee-list" id="employeeList"></div>
+        <button class="add-week-btn" onclick="addEmployee()" style="margin-top: 15px;">+ Добавить сотрудника</button>
 
-        <!-- Цель 1 -->
-        <div class="goal-section" id="goal1">
-            <div class="goal-header">
-                <div class="goal-title">Цель 1: Подключение к фиксации спроса</div>
-                <div class="status-selector">
-                    <div class="status-badge not-started" onclick="setGoalStatus('goal1', 'not-started')" data-status="not-started">Не начато</div>
-                    <div class="status-badge in-progress" onclick="setGoalStatus('goal1', 'in-progress')" data-status="in-progress">В работе</div>
-                    <div class="status-badge completed" onclick="setGoalStatus('goal1', 'completed')" data-status="completed">Выполнено</div>
+        <div class="criteria-section">
+            <div class="criterion">
+                <div class="criterion-header">
+                    <div class="criterion-title">Критерий успеха 1: 80%+ сотрудников имеют данные за 2+ недели</div>
+                    <div class="criterion-progress" id="goal1_crit1Progress">0%</div>
                 </div>
-                <div class="goal-progress" id="goal1Progress">0%</div>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="goal1Bar" style="width: 0%"></div>
-            </div>
-
-            <p style="color: #666; margin-bottom: 20px;">
-                <strong>Цель:</strong> Подключить всех сотрудников к фиксации спроса из канала почта
-            </p>
-
-            <div class="employee-list" id="employeeList"></div>
-            <button class="add-week-btn" onclick="addEmployee()" style="margin-top: 15px;">+ Добавить сотрудника</button>
-
-            <div class="criteria-section">
-                <div class="criterion">
-                    <div class="criterion-header">
-                        <div class="criterion-title">Критерий успеха 1: 80%+ сотрудников имеют данные за 2+ недели</div>
-                        <div class="criterion-progress" id="goal1_crit1Progress">0%</div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="goal1_crit1Bar" style="width: 0%"></div>
-                    </div>
-                    <div id="connectedEmployeesList"></div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="goal1_crit1Bar" style="width: 0%"></div>
                 </div>
+                <div id="connectedEmployeesList"></div>
+            </div>
 
-                <div class="criterion">
-                    <div class="criterion-header">
-                        <div class="criterion-title">Критерий успеха 2: Процесс гигиены данных (80%+ заполненность)</div>
-                        <div class="criterion-progress" id="goal1_crit2Progress">0%</div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="goal1_crit2Bar" style="width: 0%"></div>
-                    </div>
-                    <div class="weekly-data" id="hygieneWeeks"></div>
-                    <button class="add-week-btn" onclick="addHygieneWeek()">+ Добавить неделю</button>
-                    <div class="chart-container" id="hygieneChart"></div>
+            <div class="criterion">
+                <div class="criterion-header">
+                    <div class="criterion-title">Критерий успеха 2: Процесс гигиены данных (80%+ заполненность)</div>
+                    <div class="criterion-progress" id="goal1_crit2Progress">0%</div>
                 </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="goal1_crit2Bar" style="width: 0%"></div>
+                </div>
+                <div class="weekly-data" id="hygieneWeeks"></div>
+                <button class="add-week-btn" onclick="addHygieneWeek()">+ Добавить неделю</button>
+                <div class="chart-container" id="hygieneChart"></div>
             </div>
         </div>
+    </div>
 
-        <!-- Цель 2 -->
-        <div class="goal-section" id="goal2">
-            <div class="goal-header">
-                <div class="goal-title">Цель 2: Распознавание по формату</div>
-                <div class="status-selector">
-                    <div class="status-badge not-started" onclick="setGoalStatus('goal2', 'not-started')" data-status="not-started">Не начато</div>
-                    <div class="status-badge in-progress" onclick="setGoalStatus('goal2', 'in-progress')" data-status="in-progress">В работе</div>
-                    <div class="status-badge completed" onclick="setGoalStatus('goal2', 'completed')" data-status="completed">Выполнено</div>
-                </div>
-                <div class="goal-progress" id="goal2Progress">0%</div>
+    <!-- Цель 2 -->
+    <div class="goal-section" id="goal2">
+        <div class="goal-header">
+            <div class="goal-title">Цель 2: Распознавание по формату</div>
+            <div class="status-selector">
+                <div class="status-badge not-started" onclick="setGoalStatus('goal2', 'not-started')" data-status="not-started">Не начато</div>
+                <div class="status-badge in-progress" onclick="setGoalStatus('goal2', 'in-progress')" data-status="in-progress">В работе</div>
+                <div class="status-badge completed" onclick="setGoalStatus('goal2', 'completed')" data-status="completed">Выполнено</div>
             </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="goal2Bar" style="width: 0%"></div>
-            </div>
-
-            <div class="criteria-section">
-                <div class="criterion">
-                    <div class="criterion-title">Распознавание запущено</div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="text_recognition" onchange="updateGoals()">
-                        <label for="text_recognition">✍️ Распознавание текста запущено</label>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="file_recognition" onchange="updateGoals()">
-                        <label for="file_recognition">📁 Распознавание файлов запущено</label>
-                    </div>
-                </div>
-
-                <div class="criterion">
-                    <div class="criterion-header">
-                        <div class="criterion-title">Критерий успеха 1: Распознавание всех форматов файлов</div>
-                        <div class="criterion-progress" id="goal2_crit1Progress">0%</div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="goal2_crit1Bar" style="width: 0%"></div>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="format_image" onchange="updateGoals()">
-                        <label for="format_image">📷 Картинки</label>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="format_excel" onchange="updateGoals()">
-                        <label for="format_excel">📊 Excel</label>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="format_word" onchange="updateGoals()">
-                        <label for="format_word">📝 Word</label>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="format_pdf" onchange="updateGoals()">
-                        <label for="format_pdf">📄 PDF</label>
-                    </div>
-                </div>
-
-                <div class="criterion">
-                    <div class="criterion-header">
-                        <div class="criterion-title">Критерий успеха 2: Точность распознавания (90%+)</div>
-                        <div class="criterion-progress" id="goal2_crit2Progress">0%</div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="goal2_crit2Bar" style="width: 0%"></div>
-                    </div>
-                    <div class="weekly-data" id="accuracyWeeks"></div>
-                    <button class="add-week-btn" onclick="addAccuracyWeek()">+ Добавить неделю</button>
-                    <div class="chart-container" id="accuracyChart"></div>
-                </div>
-            </div>
+            <div class="goal-progress" id="goal2Progress">0%</div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="goal2Bar" style="width: 0%"></div>
         </div>
 
-        <!-- Цель 3 -->
-        <div class="goal-section" id="goal3">
-            <div class="goal-header">
-                <div class="goal-title">Цель 3: Встречи на уровне РОПов</div>
-                <div class="status-selector">
-                    <div class="status-badge not-started" onclick="setGoalStatus('goal3', 'not-started')" data-status="not-started">Не начато</div>
-                    <div class="status-badge in-progress" onclick="setGoalStatus('goal3', 'in-progress')" data-status="in-progress">В работе</div>
-                    <div class="status-badge completed" onclick="setGoalStatus('goal3', 'completed')" data-status="completed">Выполнено</div>
+        <div class="criteria-section">
+            <div class="criterion">
+                <div class="criterion-title">Распознавание запущено</div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="text_recognition" onchange="updateGoals()">
+                    <label for="text_recognition">✍️ Распознавание текста запущено</label>
                 </div>
-                <div class="goal-progress" id="goal3Progress">0%</div>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="goal3Bar" style="width: 0%"></div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="file_recognition" onchange="updateGoals()">
+                    <label for="file_recognition">📁 Распознавание файлов запущено</label>
+                </div>
             </div>
 
-            <div class="criteria-section">
-                <div class="criterion">
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="rop_meetings_launched" onchange="updateGoals()">
-                        <label for="rop_meetings_launched">Встречи на уровне РОПов запущены</label>
-                    </div>
+            <div class="criterion">
+                <div class="criterion-header">
+                    <div class="criterion-title">Критерий успеха 1: Распознавание всех форматов файлов</div>
+                    <div class="criterion-progress" id="goal2_crit1Progress">0%</div>
                 </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="goal2_crit1Bar" style="width: 0%"></div>
+                </div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="format_image" onchange="updateGoals()">
+                    <label for="format_image">📷 Картинки</label>
+                </div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="format_excel" onchange="updateGoals()">
+                    <label for="format_excel">📊 Excel</label>
+                </div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="format_word" onchange="updateGoals()">
+                    <label for="format_word">📝 Word</label>
+                </div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="format_pdf" onchange="updateGoals()">
+                    <label for="format_pdf">📄 PDF</label>
+                </div>
+            </div>
 
-                <div class="criterion">
-                    <div class="criterion-header">
-                        <div class="criterion-title">Критерий успеха</div>
-                        <div class="criterion-progress" id="goal3_crit1Progress">0%</div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="goal3_crit1Bar" style="width: 0%"></div>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="rop_metrics_review" onchange="updateGoals()">
-                        <label for="rop_metrics_review">Регулярно рассматриваются новые метрики</label>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="rop_self_analytics" onchange="updateGoals()">
-                        <label for="rop_self_analytics">Сотрудники умеют самостоятельно собирать аналитику</label>
-                    </div>
+            <div class="criterion">
+                <div class="criterion-header">
+                    <div class="criterion-title">Критерий успеха 2: Точность распознавания (90%+)</div>
+                    <div class="criterion-progress" id="goal2_crit2Progress">0%</div>
                 </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="goal2_crit2Bar" style="width: 0%"></div>
+                </div>
+                <div class="weekly-data" id="accuracyWeeks"></div>
+                <button class="add-week-btn" onclick="addAccuracyWeek()">+ Добавить неделю</button>
+                <div class="chart-container" id="accuracyChart"></div>
             </div>
         </div>
+    </div>
 
-        <!-- Цель 4 -->
-        <div class="goal-section" id="goal4">
-            <div class="goal-header">
-                <div class="goal-title">Цель 4: Встречи по данным по всему филиалу</div>
-                <div class="status-selector">
-                    <div class="status-badge not-started" onclick="setGoalStatus('goal4', 'not-started')" data-status="not-started">Не начато</div>
-                    <div class="status-badge in-progress" onclick="setGoalStatus('goal4', 'in-progress')" data-status="in-progress">В работе</div>
-                    <div class="status-badge completed" onclick="setGoalStatus('goal4', 'completed')" data-status="completed">Выполнено</div>
-                </div>
-                <div class="goal-progress" id="goal4Progress">0%</div>
+    <!-- Цель 3 -->
+    <div class="goal-section" id="goal3">
+        <div class="goal-header">
+            <div class="goal-title">Цель 3: Встречи на уровне РОПов</div>
+            <div class="status-selector">
+                <div class="status-badge not-started" onclick="setGoalStatus('goal3', 'not-started')" data-status="not-started">Не начато</div>
+                <div class="status-badge in-progress" onclick="setGoalStatus('goal3', 'in-progress')" data-status="in-progress">В работе</div>
+                <div class="status-badge completed" onclick="setGoalStatus('goal3', 'completed')" data-status="completed">Выполнено</div>
             </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="goal4Bar" style="width: 0%"></div>
+            <div class="goal-progress" id="goal3Progress">0%</div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="goal3Bar" style="width: 0%"></div>
+        </div>
+
+        <div class="criteria-section">
+            <div class="criterion">
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="rop_meetings_launched" onchange="updateGoals()">
+                    <label for="rop_meetings_launched">Встречи на уровне РОПов запущены</label>
+                </div>
             </div>
 
-            <div class="criteria-section">
-                <div class="criterion">
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="branch_meetings_launched" onchange="updateGoals()">
-                        <label for="branch_meetings_launched">Встречи по данным филиала запущены</label>
-                    </div>
+            <div class="criterion">
+                <div class="criterion-header">
+                    <div class="criterion-title">Критерий успеха</div>
+                    <div class="criterion-progress" id="goal3_crit1Progress">0%</div>
                 </div>
-
-                <div class="criterion">
-                    <div class="criterion-header">
-                        <div class="criterion-title">Критерий успеха</div>
-                        <div class="criterion-progress" id="goal4_crit1Progress">0%</div>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" id="goal4_crit1Bar" style="width: 0%"></div>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="branch_metrics_review" onchange="updateGoals()">
-                        <label for="branch_metrics_review">Регулярно рассматриваются новые метрики</label>
-                    </div>
-                    <div class="simple-checkbox">
-                        <input type="checkbox" id="branch_self_analytics" onchange="updateGoals()">
-                        <label for="branch_self_analytics">Сотрудники умеют собирать аналитику для каскада встреч</label>
-                    </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="goal3_crit1Bar" style="width: 0%"></div>
+                </div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="rop_metrics_review" onchange="updateGoals()">
+                    <label for="rop_metrics_review">Регулярно рассматриваются новые метрики</label>
+                </div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="rop_self_analytics" onchange="updateGoals()">
+                    <label for="rop_self_analytics">Сотрудники умеют самостоятельно собирать аналитику</label>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // 🔥🔥🔥 ЗАМЕНИТЕ ЭТИ ДВЕ СТРОКИ НА ВАШИ ДАННЫЕ! 🔥🔥🔥
-        const JSONBIN_API_KEY = '$2a$10$9auXIl05GCDdgtGvT03IRulF.EpUB.JkDX3a0OVnuPT2154pK6rkO';  
-        const JSONBIN_BIN_ID = '6a5f67feda38895dfe7ac46d';           
-        // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+    <!-- Цель 4 -->
+    <div class="goal-section" id="goal4">
+        <div class="goal-header">
+            <div class="goal-title">Цель 4: Встречи по данным по всему филиалу</div>
+            <div class="status-selector">
+                <div class="status-badge not-started" onclick="setGoalStatus('goal4', 'not-started')" data-status="not-started">Не начато</div>
+                <div class="status-badge in-progress" onclick="setGoalStatus('goal4', 'in-progress')" data-status="in-progress">В работе</div>
+                <div class="status-badge completed" onclick="setGoalStatus('goal4', 'completed')" data-status="completed">Выполнено</div>
+            </div>
+            <div class="goal-progress" id="goal4Progress">0%</div>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="goal4Bar" style="width: 0%"></div>
+        </div>
 
-        let employees = [];
-        let hygieneData = [];
-        let accuracyData = [];
-        let statuses = {};
-        let isViewOnlyMode = false;
-        let isSyncing = false;
+        <div class="criteria-section">
+            <div class="criterion">
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="branch_meetings_launched" onchange="updateGoals()">
+                    <label for="branch_meetings_launched">Встречи по данным филиала запущены</label>
+                </div>
+            </div>
 
-        function showSyncStatus(text, type) {
-            const status = document.getElementById('syncStatus');
-            const statusText = document.getElementById('syncStatusText');
-            statusText.textContent = text;
-            status.className = 'sync-status show ' + type;
-            setTimeout(() => status.classList.remove('show'), 3000);
-        }
+            <div class="criterion">
+                <div class="criterion-header">
+                    <div class="criterion-title">Критерий успеха</div>
+                    <div class="criterion-progress" id="goal4_crit1Progress">0%</div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="goal4_crit1Bar" style="width: 0%"></div>
+                </div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="branch_metrics_review" onchange="updateGoals()">
+                    <label for="branch_metrics_review">Регулярно рассматриваются новые метрики</label>
+                </div>
+                <div class="simple-checkbox">
+                    <input type="checkbox" id="branch_self_analytics" onchange="updateGoals()">
+                    <label for="branch_self_analytics">Сотрудники умеют собирать аналитику для каскада встреч</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        async function loadFromCloud() {
-            try {
-                showSyncStatus('🔄 Загрузка данных...', 'syncing');
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
-                });
-                if (!response.ok) throw new Error('Ошибка загрузки');
-                
-                const result = await response.json();
-                const data = result.record;
-                
+<script>
+    // 🔥 ЗАМЕНИТЕ на ваш URL из Firebase! 🔥
+    const FIREBASE_URL = 'https://severstal-dashboard-default-rtdb.europe-west1.firebasedatabase.app';
+    
+    let employees = [];
+    let hygieneData = [];
+    let accuracyData = [];
+    let statuses = {};
+    let isViewOnlyMode = false;
+
+    function showSyncStatus(text, type) {
+        const status = document.getElementById('syncStatus');
+        const statusText = document.getElementById('syncStatusText');
+        statusText.textContent = text;
+        status.className = 'sync-status show ' + type;
+        setTimeout(() => status.classList.remove('show'), 3000);
+    }
+
+    async function loadFromCloud() {
+        try {
+            showSyncStatus('🔄 Загрузка данных...', 'syncing');
+            const response = await fetch(`${FIREBASE_URL}/dashboard.json`);
+            
+            if (!response.ok) throw new Error('Ошибка загрузки');
+            
+            const data = await response.json();
+            
+            if (data) {
                 employees = data.employees || [];
                 hygieneData = data.hygieneData || [];
                 accuracyData = data.accuracyData || [];
@@ -702,387 +677,383 @@
                 
                 document.getElementById('lastUpdate').textContent = new Date(data.timestamp).toLocaleString('ru-RU');
                 showSyncStatus('✅ Данные загружены', 'synced');
-                return true;
-            } catch (error) {
-                console.error('Ошибка:', error);
-                showSyncStatus('⚠️ Ошибка загрузки', 'error');
-                return false;
+            } else {
+                showSyncStatus('ℹ️ Нет сохраненных данных', 'syncing');
             }
-        }
-
-        async function saveToCloud() {
-            if (isViewOnlyMode || isSyncing) return;
-            isSyncing = true;
             
-            try {
-                const checkboxes = {};
-                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-                    if (cb.id && cb.id !== 'adminMode') checkboxes[cb.id] = cb.checked;
-                });
-
-                const data = {
-                    employees,
-                    hygieneData,
-                    accuracyData,
-                    checkboxes,
-                    statuses,
-                    timestamp: new Date().toISOString()
-                };
-
-                showSyncStatus('🔄 Сохранение...', 'syncing');
-                
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_API_KEY
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (!response.ok) throw new Error('Ошибка сохранения');
-                
-                showSyncStatus('✅ Сохранено!', 'synced');
-                document.getElementById('lastUpdate').textContent = new Date().toLocaleString('ru-RU');
-            } catch (error) {
-                console.error('Ошибка:', error);
-                showSyncStatus('❌ Ошибка сохранения', 'error');
-            } finally {
-                isSyncing = false;
-            }
-        }
-
-        function checkViewOnlyMode() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('view') === 'only') {
-                isViewOnlyMode = true;
-                document.getElementById('adminMode').checked = false;
-                document.querySelector('.admin-mode-toggle').style.display = 'none';
-                document.getElementById('viewOnlyBanner').classList.add('show');
-                document.body.classList.add('readonly');
-                return true;
-            }
+            return true;
+        } catch (error) {
+            console.error('Ошибка:', error);
+            showSyncStatus('⚠️ Ошибка загрузки', 'error');
             return false;
         }
+    }
 
-        function setGoalStatus(goalId, status) {
-            if (isViewOnlyMode) return;
-            statuses[goalId] = status;
-            const badges = document.querySelector(`#${goalId} .status-selector`).querySelectorAll('.status-badge');
-            badges.forEach(badge => {
-                badge.classList.remove('active');
-                if (badge.dataset.status === status) badge.classList.add('active');
+    async function saveToCloud() {
+        if (isViewOnlyMode) return;
+        
+        try {
+            const checkboxes = {};
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (cb.id && cb.id !== 'adminMode') checkboxes[cb.id] = cb.checked;
             });
-            saveToCloud();
-        }
 
-        function renderEmployees() {
-            const container = document.getElementById('employeeList');
-            container.innerHTML = employees.map((emp, index) => `
+            const data = {
+                employees,
+                hygieneData,
+                accuracyData,
+                checkboxes,
+                statuses,
+                timestamp: new Date().toISOString()
+            };
+
+            showSyncStatus('🔄 Сохранение...', 'syncing');
+            
+            const response = await fetch(`${FIREBASE_URL}/dashboard.json`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) throw new Error('Ошибка сохранения');
+            
+            showSyncStatus('✅ Сохранено!', 'synced');
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('ru-RU');
+        } catch (error) {
+            console.error('Ошибка:', error);
+            showSyncStatus('❌ Ошибка сохранения', 'error');
+        }
+    }
+
+    function checkViewOnlyMode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('view') === 'only') {
+            isViewOnlyMode = true;
+            document.getElementById('adminMode').checked = false;
+            document.querySelector('.admin-mode-toggle').style.display = 'none';
+            document.getElementById('viewOnlyBanner').classList.add('show');
+            document.body.classList.add('readonly');
+            return true;
+        }
+        return false;
+    }
+
+    function setGoalStatus(goalId, status) {
+        if (isViewOnlyMode) return;
+        statuses[goalId] = status;
+        const badges = document.querySelector(`#${goalId} .status-selector`).querySelectorAll('.status-badge');
+        badges.forEach(badge => {
+            badge.classList.remove('active');
+            if (badge.dataset.status === status) badge.classList.add('active');
+        });
+        saveToCloud();
+    }
+
+    function renderEmployees() {
+        const container = document.getElementById('employeeList');
+        container.innerHTML = employees.map((emp, index) => `
+            <div class="employee-item">
+                <div class="employee-header">
+                    <div class="employee-name">${emp.name}</div>
+                    <div class="checkbox-container">
+                        <span class="checkbox-label">Подключен</span>
+                        <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})">
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderConnectedEmployees() {
+        const container = document.getElementById('connectedEmployeesList');
+        const connected = employees.filter(e => e.connected);
+        if (connected.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Нет подключенных сотрудников</p>';
+            return;
+        }
+        container.innerHTML = connected.map(emp => {
+            const index = employees.indexOf(emp);
+            return `
                 <div class="employee-item">
                     <div class="employee-header">
                         <div class="employee-name">${emp.name}</div>
                         <div class="checkbox-container">
-                            <span class="checkbox-label">Подключен</span>
-                            <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})">
+                            <span class="checkbox-label">Данные 2+ недели</span>
+                            <input type="checkbox" ${emp.hasData ? 'checked' : ''} onchange="toggleEmployeeData(${index})">
                         </div>
                     </div>
                 </div>
-            `).join('');
-        }
+            `;
+        }).join('');
+    }
 
-        function renderConnectedEmployees() {
-            const container = document.getElementById('connectedEmployeesList');
-            const connected = employees.filter(e => e.connected);
-            if (connected.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Нет подключенных сотрудников</p>';
-                return;
-            }
-            container.innerHTML = connected.map(emp => {
-                const index = employees.indexOf(emp);
-                return `
-                    <div class="employee-item">
-                        <div class="employee-header">
-                            <div class="employee-name">${emp.name}</div>
-                            <div class="checkbox-container">
-                                <span class="checkbox-label">Данные 2+ недели</span>
-                                <input type="checkbox" ${emp.hasData ? 'checked' : ''} onchange="toggleEmployeeData(${index})">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
+    function toggleEmployee(index) {
+        if (isViewOnlyMode) return;
+        employees[index].connected = !employees[index].connected;
+        if (!employees[index].connected) employees[index].hasData = false;
+        renderEmployees();
+        renderConnectedEmployees();
+        updateGoals();
+        saveToCloud();
+    }
 
-        function toggleEmployee(index) {
-            if (isViewOnlyMode) return;
-            employees[index].connected = !employees[index].connected;
-            if (!employees[index].connected) employees[index].hasData = false;
+    function toggleEmployeeData(index) {
+        if (isViewOnlyMode) return;
+        employees[index].hasData = !employees[index].hasData;
+        updateGoals();
+        saveToCloud();
+    }
+
+    function addEmployee() {
+        if (isViewOnlyMode) return;
+        const name = prompt('Введите ФИО сотрудника:');
+        if (name) {
+            employees.push({ name, connected: false, hasData: false });
             renderEmployees();
             renderConnectedEmployees();
             updateGoals();
             saveToCloud();
         }
+    }
 
-        function toggleEmployeeData(index) {
-            if (isViewOnlyMode) return;
-            employees[index].hasData = !employees[index].hasData;
-            updateGoals();
-            saveToCloud();
-        }
+    function renderHygieneWeeks() {
+        const container = document.getElementById('hygieneWeeks');
+        container.innerHTML = hygieneData.map((week, index) => `
+            <div class="week-entry">
+                <input type="text" value="${week.week}" onchange="updateHygieneWeek(${index}, 'week', this.value)" placeholder="Неделя">
+                <input type="number" value="${week.percentage}" onchange="updateHygieneWeek(${index}, 'percentage', this.value)" placeholder="%" min="0" max="100">
+                <button class="delete-week-btn" onclick="deleteHygieneWeek(${index})">🗑️</button>
+            </div>
+        `).join('');
+        renderHygieneChart();
+    }
 
-        function addEmployee() {
-            if (isViewOnlyMode) return;
-            const name = prompt('Введите ФИО сотрудника:');
-            if (name) {
-                employees.push({ name, connected: false, hasData: false });
-                renderEmployees();
-                renderConnectedEmployees();
-                updateGoals();
-                saveToCloud();
-            }
-        }
+    function addHygieneWeek() {
+        if (isViewOnlyMode) return;
+        hygieneData.push({ week: '', percentage: 0 });
+        renderHygieneWeeks();
+        saveToCloud();
+    }
 
-        function renderHygieneWeeks() {
-            const container = document.getElementById('hygieneWeeks');
-            container.innerHTML = hygieneData.map((week, index) => `
-                <div class="week-entry">
-                    <input type="text" value="${week.week}" onchange="updateHygieneWeek(${index}, 'week', this.value)" placeholder="Неделя">
-                    <input type="number" value="${week.percentage}" onchange="updateHygieneWeek(${index}, 'percentage', this.value)" placeholder="%" min="0" max="100">
-                    <button class="delete-week-btn" onclick="deleteHygieneWeek(${index})">🗑️</button>
-                </div>
-            `).join('');
-            renderHygieneChart();
-        }
-
-        function addHygieneWeek() {
-            if (isViewOnlyMode) return;
-            hygieneData.push({ week: '', percentage: 0 });
-            renderHygieneWeeks();
-            saveToCloud();
-        }
-
-        function deleteHygieneWeek(index) {
-            if (isViewOnlyMode) return;
-            if (confirm('Удалить?')) {
-                hygieneData.splice(index, 1);
-                renderHygieneWeeks();
-                updateGoals();
-                saveToCloud();
-            }
-        }
-
-        function updateHygieneWeek(index, field, value) {
-            if (isViewOnlyMode) return;
-            hygieneData[index][field] = field === 'percentage' ? parseInt(value) || 0 : value;
+    function deleteHygieneWeek(index) {
+        if (isViewOnlyMode) return;
+        if (confirm('Удалить?')) {
+            hygieneData.splice(index, 1);
             renderHygieneWeeks();
             updateGoals();
             saveToCloud();
         }
+    }
 
-        function renderHygieneChart() {
-            const container = document.getElementById('hygieneChart');
-            if (hygieneData.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #999; padding: 50px;">Нет данных</p>';
-                return;
+    function updateHygieneWeek(index, field, value) {
+        if (isViewOnlyMode) return;
+        hygieneData[index][field] = field === 'percentage' ? parseInt(value) || 0 : value;
+        renderHygieneWeeks();
+        updateGoals();
+        saveToCloud();
+    }
+
+    function renderHygieneChart() {
+        const container = document.getElementById('hygieneChart');
+        if (hygieneData.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: #999; padding: 50px;">Нет данных</p>';
+            return;
+        }
+        const chartHTML = hygieneData.map((week, index) => {
+            const height = Math.max((week.percentage / 100) * 250, 30);
+            const color = week.percentage >= 80 ? '#28a745' : week.percentage >= 60 ? '#ffc107' : '#dc3545';
+            let diffHTML = '';
+            if (index > 0) {
+                const diff = week.percentage - hygieneData[index - 1].percentage;
+                const arrow = diff >= 0 ? '↑' : '↓';
+                const diffClass = diff >= 0 ? 'positive' : 'negative';
+                diffHTML = `<div class="chart-diff ${diffClass}">${arrow} ${Math.abs(diff)}%</div>`;
             }
-            const chartHTML = hygieneData.map((week, index) => {
-                const height = Math.max((week.percentage / 100) * 250, 30);
-                const color = week.percentage >= 80 ? '#28a745' : week.percentage >= 60 ? '#ffc107' : '#dc3545';
-                let diffHTML = '';
-                if (index > 0) {
-                    const diff = week.percentage - hygieneData[index - 1].percentage;
-                    const arrow = diff >= 0 ? '↑' : '↓';
-                    const diffClass = diff >= 0 ? 'positive' : 'negative';
-                    diffHTML = `<div class="chart-diff ${diffClass}">${arrow} ${Math.abs(diff)}%</div>`;
-                }
-                return `
-                    <div class="chart-bar-wrapper">
-                        <div class="chart-bar" style="background: ${color}; height: ${height}px;">
-                            ${diffHTML}
-                            <div class="chart-value">${week.percentage}%</div>
-                        </div>
-                        <div class="chart-label">${week.week}</div>
+            return `
+                <div class="chart-bar-wrapper">
+                    <div class="chart-bar" style="background: ${color}; height: ${height}px;">
+                        ${diffHTML}
+                        <div class="chart-value">${week.percentage}%</div>
                     </div>
-                `;
-            }).join('');
-            container.innerHTML = `<div style="display: flex; align-items: flex-end; justify-content: center; height: 300px; padding-top: 30px;">${chartHTML}</div>`;
-        }
-
-        function renderAccuracyWeeks() {
-            const container = document.getElementById('accuracyWeeks');
-            container.innerHTML = accuracyData.map((week, index) => `
-                <div class="week-entry">
-                    <input type="text" value="${week.week}" onchange="updateAccuracyWeek(${index}, 'week', this.value)" placeholder="Неделя">
-                    <input type="number" value="${week.percentage}" onchange="updateAccuracyWeek(${index}, 'percentage', this.value)" placeholder="%" min="0" max="100">
-                    <button class="delete-week-btn" onclick="deleteAccuracyWeek(${index})">🗑️</button>
+                    <div class="chart-label">${week.week}</div>
                 </div>
-            `).join('');
-            renderAccuracyChart();
-        }
+            `;
+        }).join('');
+        container.innerHTML = `<div style="display: flex; align-items: flex-end; justify-content: center; height: 300px; padding-top: 30px;">${chartHTML}</div>`;
+    }
 
-        function addAccuracyWeek() {
-            if (isViewOnlyMode) return;
-            accuracyData.push({ week: '', percentage: 0 });
-            renderAccuracyWeeks();
-            saveToCloud();
-        }
+    function renderAccuracyWeeks() {
+        const container = document.getElementById('accuracyWeeks');
+        container.innerHTML = accuracyData.map((week, index) => `
+            <div class="week-entry">
+                <input type="text" value="${week.week}" onchange="updateAccuracyWeek(${index}, 'week', this.value)" placeholder="Неделя">
+                <input type="number" value="${week.percentage}" onchange="updateAccuracyWeek(${index}, 'percentage', this.value)" placeholder="%" min="0" max="100">
+                <button class="delete-week-btn" onclick="deleteAccuracyWeek(${index})">🗑️</button>
+            </div>
+        `).join('');
+        renderAccuracyChart();
+    }
 
-        function deleteAccuracyWeek(index) {
-            if (isViewOnlyMode) return;
-            if (confirm('Удалить?')) {
-                accuracyData.splice(index, 1);
-                renderAccuracyWeeks();
-                updateGoals();
-                saveToCloud();
-            }
-        }
+    function addAccuracyWeek() {
+        if (isViewOnlyMode) return;
+        accuracyData.push({ week: '', percentage: 0 });
+        renderAccuracyWeeks();
+        saveToCloud();
+    }
 
-        function updateAccuracyWeek(index, field, value) {
-            if (isViewOnlyMode) return;
-            accuracyData[index][field] = field === 'percentage' ? parseInt(value) || 0 : value;
+    function deleteAccuracyWeek(index) {
+        if (isViewOnlyMode) return;
+        if (confirm('Удалить?')) {
+            accuracyData.splice(index, 1);
             renderAccuracyWeeks();
             updateGoals();
             saveToCloud();
         }
+    }
 
-        function renderAccuracyChart() {
-            const container = document.getElementById('accuracyChart');
-            if (accuracyData.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #999; padding: 50px;">Нет данных</p>';
-                return;
+    function updateAccuracyWeek(index, field, value) {
+        if (isViewOnlyMode) return;
+        accuracyData[index][field] = field === 'percentage' ? parseInt(value) || 0 : value;
+        renderAccuracyWeeks();
+        updateGoals();
+        saveToCloud();
+    }
+
+    function renderAccuracyChart() {
+        const container = document.getElementById('accuracyChart');
+        if (accuracyData.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: #999; padding: 50px;">Нет данных</p>';
+            return;
+        }
+        const chartHTML = accuracyData.map((week, index) => {
+            const height = Math.max((week.percentage / 100) * 250, 30);
+            const color = week.percentage >= 90 ? '#28a745' : week.percentage >= 75 ? '#ffc107' : '#dc3545';
+            let diffHTML = '';
+            if (index > 0) {
+                const diff = week.percentage - accuracyData[index - 1].percentage;
+                const arrow = diff >= 0 ? '↑' : '↓';
+                const diffClass = diff >= 0 ? 'positive' : 'negative';
+                diffHTML = `<div class="chart-diff ${diffClass}">${arrow} ${Math.abs(diff)}%</div>`;
             }
-            const chartHTML = accuracyData.map((week, index) => {
-                const height = Math.max((week.percentage / 100) * 250, 30);
-                const color = week.percentage >= 90 ? '#28a745' : week.percentage >= 75 ? '#ffc107' : '#dc3545';
-                let diffHTML = '';
-                if (index > 0) {
-                    const diff = week.percentage - accuracyData[index - 1].percentage;
-                    const arrow = diff >= 0 ? '↑' : '↓';
-                    const diffClass = diff >= 0 ? 'positive' : 'negative';
-                    diffHTML = `<div class="chart-diff ${diffClass}">${arrow} ${Math.abs(diff)}%</div>`;
-                }
-                return `
-                    <div class="chart-bar-wrapper">
-                        <div class="chart-bar" style="background: ${color}; height: ${height}px;">
-                            ${diffHTML}
-                            <div class="chart-value">${week.percentage}%</div>
-                        </div>
-                        <div class="chart-label">${week.week}</div>
+            return `
+                <div class="chart-bar-wrapper">
+                    <div class="chart-bar" style="background: ${color}; height: ${height}px;">
+                        ${diffHTML}
+                        <div class="chart-value">${week.percentage}%</div>
                     </div>
-                `;
-            }).join('');
-            container.innerHTML = `<div style="display: flex; align-items: flex-end; justify-content: center; height: 300px; padding-top: 30px;">${chartHTML}</div>`;
-        }
+                    <div class="chart-label">${week.week}</div>
+                </div>
+            `;
+        }).join('');
+        container.innerHTML = `<div style="display: flex; align-items: flex-end; justify-content: center; height: 300px; padding-top: 30px;">${chartHTML}</div>`;
+    }
 
-        function updateGoals() {
-            // Цель 1
-            const connectedCount = employees.filter(e => e.connected).length;
-            const connectionPct = employees.length > 0 ? (connectedCount / employees.length) * 100 : 0;
-            
-            const connectedEmps = employees.filter(e => e.connected);
-            const withDataCount = connectedEmps.filter(e => e.hasData).length;
-            const withDataPct = connectedEmps.length > 0 ? (withDataCount / connectedEmps.length) * 100 : 0;
-            
-            document.getElementById('goal1_crit1Progress').textContent = Math.round(withDataPct) + '%';
-            document.getElementById('goal1_crit1Bar').style.width = withDataPct + '%';
-            
-            const hygienePct = hygieneData.length > 0 ? Math.min(hygieneData[hygieneData.length - 1].percentage, 100) : 0;
-            document.getElementById('goal1_crit2Progress').textContent = Math.round(hygienePct) + '%';
-            document.getElementById('goal1_crit2Bar').style.width = hygienePct + '%';
-            
-            const goal1Pct = (connectionPct + withDataPct + hygienePct) / 3;
-            document.getElementById('goal1Progress').textContent = Math.round(goal1Pct) + '%';
-            document.getElementById('goal1Bar').style.width = goal1Pct + '%';
+    function updateGoals() {
+        // Цель 1
+        const connectedCount = employees.filter(e => e.connected).length;
+        const connectionPct = employees.length > 0 ? (connectedCount / employees.length) * 100 : 0;
+        
+        const connectedEmps = employees.filter(e => e.connected);
+        const withDataCount = connectedEmps.filter(e => e.hasData).length;
+        const withDataPct = connectedEmps.length > 0 ? (withDataCount / connectedEmps.length) * 100 : 0;
+        
+        document.getElementById('goal1_crit1Progress').textContent = Math.round(withDataPct) + '%';
+        document.getElementById('goal1_crit1Bar').style.width = withDataPct + '%';
+        
+        const hygienePct = hygieneData.length > 0 ? Math.min(hygieneData[hygieneData.length - 1].percentage, 100) : 0;
+        document.getElementById('goal1_crit2Progress').textContent = Math.round(hygienePct) + '%';
+        document.getElementById('goal1_crit2Bar').style.width = hygienePct + '%';
+        
+        const goal1Pct = (connectionPct + withDataPct + hygienePct) / 3;
+        document.getElementById('goal1Progress').textContent = Math.round(goal1Pct) + '%';
+        document.getElementById('goal1Bar').style.width = goal1Pct + '%';
 
-            // Цель 2
-            const textRec = document.getElementById('text_recognition').checked;
-            const fileRec = document.getElementById('file_recognition').checked;
-            const recPct = ((textRec ? 50 : 0) + (fileRec ? 50 : 0));
+        // Цель 2
+        const textRec = document.getElementById('text_recognition').checked;
+        const fileRec = document.getElementById('file_recognition').checked;
+        const recPct = ((textRec ? 50 : 0) + (fileRec ? 50 : 0));
 
-            const formats = ['format_image', 'format_excel', 'format_word', 'format_pdf'];
-            const formatsPct = (formats.filter(id => document.getElementById(id).checked).length / formats.length) * 100;
-            document.getElementById('goal2_crit1Progress').textContent = Math.round(formatsPct) + '%';
-            document.getElementById('goal2_crit1Bar').style.width = formatsPct + '%';
+        const formats = ['format_image', 'format_excel', 'format_word', 'format_pdf'];
+        const formatsPct = (formats.filter(id => document.getElementById(id).checked).length / formats.length) * 100;
+        document.getElementById('goal2_crit1Progress').textContent = Math.round(formatsPct) + '%';
+        document.getElementById('goal2_crit1Bar').style.width = formatsPct + '%';
 
-            const accuracyPct = accuracyData.length > 0 ? Math.min(accuracyData[accuracyData.length - 1].percentage, 100) : 0;
-            document.getElementById('goal2_crit2Progress').textContent = Math.round(accuracyPct) + '%';
-            document.getElementById('goal2_crit2Bar').style.width = accuracyPct + '%';
+        const accuracyPct = accuracyData.length > 0 ? Math.min(accuracyData[accuracyData.length - 1].percentage, 100) : 0;
+        document.getElementById('goal2_crit2Progress').textContent = Math.round(accuracyPct) + '%';
+        document.getElementById('goal2_crit2Bar').style.width = accuracyPct + '%';
 
-            const goal2Pct = (recPct + formatsPct + accuracyPct) / 3;
-            document.getElementById('goal2Progress').textContent = Math.round(goal2Pct) + '%';
-            document.getElementById('goal2Bar').style.width = goal2Pct + '%';
+        const goal2Pct = (recPct + formatsPct + accuracyPct) / 3;
+        document.getElementById('goal2Progress').textContent = Math.round(goal2Pct) + '%';
+        document.getElementById('goal2Bar').style.width = goal2Pct + '%';
 
-            // Цель 3
-            const ropMeet = document.getElementById('rop_meetings_launched').checked;
-            const ropMetrics = document.getElementById('rop_metrics_review').checked;
-            const ropAnalytics = document.getElementById('rop_self_analytics').checked;
-            
-            const ropCritPct = ((ropMetrics ? 50 : 0) + (ropAnalytics ? 50 : 0));
-            document.getElementById('goal3_crit1Progress').textContent = Math.round(ropCritPct) + '%';
-            document.getElementById('goal3_crit1Bar').style.width = ropCritPct + '%';
+        // Цель 3
+        const ropMeet = document.getElementById('rop_meetings_launched').checked;
+        const ropMetrics = document.getElementById('rop_metrics_review').checked;
+        const ropAnalytics = document.getElementById('rop_self_analytics').checked;
+        
+        const ropCritPct = ((ropMetrics ? 50 : 0) + (ropAnalytics ? 50 : 0));
+        document.getElementById('goal3_crit1Progress').textContent = Math.round(ropCritPct) + '%';
+        document.getElementById('goal3_crit1Bar').style.width = ropCritPct + '%';
 
-            const goal3Pct = ((ropMeet ? 33.33 : 0) + (ropMetrics ? 33.33 : 0) + (ropAnalytics ? 33.34 : 0));
-            document.getElementById('goal3Progress').textContent = Math.round(goal3Pct) + '%';
-            document.getElementById('goal3Bar').style.width = goal3Pct + '%';
+        const goal3Pct = ((ropMeet ? 33.33 : 0) + (ropMetrics ? 33.33 : 0) + (ropAnalytics ? 33.34 : 0));
+        document.getElementById('goal3Progress').textContent = Math.round(goal3Pct) + '%';
+        document.getElementById('goal3Bar').style.width = goal3Pct + '%';
 
-            // Цель 4
-            const branchMeet = document.getElementById('branch_meetings_launched').checked;
-            const branchMetrics = document.getElementById('branch_metrics_review').checked;
-            const branchAnalytics = document.getElementById('branch_self_analytics').checked;
-            
-            const branchCritPct = ((branchMetrics ? 50 : 0) + (branchAnalytics ? 50 : 0));
-            document.getElementById('goal4_crit1Progress').textContent = Math.round(branchCritPct) + '%';
-            document.getElementById('goal4_crit1Bar').style.width = branchCritPct + '%';
+        // Цель 4
+        const branchMeet = document.getElementById('branch_meetings_launched').checked;
+        const branchMetrics = document.getElementById('branch_metrics_review').checked;
+        const branchAnalytics = document.getElementById('branch_self_analytics').checked;
+        
+        const branchCritPct = ((branchMetrics ? 50 : 0) + (branchAnalytics ? 50 : 0));
+        document.getElementById('goal4_crit1Progress').textContent = Math.round(branchCritPct) + '%';
+        document.getElementById('goal4_crit1Bar').style.width = branchCritPct + '%';
 
-            const goal4Pct = ((branchMeet ? 33.33 : 0) + (branchMetrics ? 33.33 : 0) + (branchAnalytics ? 33.34 : 0));
-            document.getElementById('goal4Progress').textContent = Math.round(goal4Pct) + '%';
-            document.getElementById('goal4Bar').style.width = goal4Pct + '%';
+        const goal4Pct = ((branchMeet ? 33.33 : 0) + (branchMetrics ? 33.33 : 0) + (branchAnalytics ? 33.34 : 0));
+        document.getElementById('goal4Progress').textContent = Math.round(goal4Pct) + '%';
+        document.getElementById('goal4Bar').style.width = goal4Pct + '%';
 
-            // Общая статистика
-            const totalPct = (goal1Pct + goal2Pct + goal3Pct + goal4Pct) / 4;
-            document.getElementById('totalProgress').textContent = Math.round(totalPct) + '%';
+        // Общая статистика
+        const totalPct = (goal1Pct + goal2Pct + goal3Pct + goal4Pct) / 4;
+        document.getElementById('totalProgress').textContent = Math.round(totalPct) + '%';
 
-            const completedGoals = [goal1Pct, goal2Pct, goal3Pct, goal4Pct].filter(p => p >= 100).length;
-            document.getElementById('completedGoals').textContent = completedGoals + '/4';
+        const completedGoals = [goal1Pct, goal2Pct, goal3Pct, goal4Pct].filter(p => p >= 100).length;
+        document.getElementById('completedGoals').textContent = completedGoals + '/4';
 
-            const completedCriteria = [
-                withDataPct >= 80,
-                hygienePct >= 80,
-                formatsPct === 100,
-                accuracyPct >= 90,
-                ropMeet,
-                ropCritPct === 100,
-                branchMeet,
-                branchCritPct === 100
-            ].filter(c => c).length;
-            document.getElementById('completedCriteria').textContent = completedCriteria + '/8';
+        const completedCriteria = [
+            withDataPct >= 80,
+            hygienePct >= 80,
+            formatsPct === 100,
+            accuracyPct >= 90,
+            ropMeet,
+            ropCritPct === 100,
+            branchMeet,
+            branchCritPct === 100
+        ].filter(c => c).length;
+        document.getElementById('completedCriteria').textContent = completedCriteria + '/8';
 
-            if (!isViewOnlyMode) saveToCloud();
-        }
+        if (!isViewOnlyMode) saveToCloud();
+    }
 
-        async function init() {
-            checkViewOnlyMode();
+    async function init() {
+        checkViewOnlyMode();
+        await loadFromCloud();
+        renderEmployees();
+        renderConnectedEmployees();
+        renderHygieneWeeks();
+        renderAccuracyWeeks();
+        updateGoals();
+    }
+
+    init();
+
+    if (isViewOnlyMode) {
+        setInterval(async () => {
             await loadFromCloud();
             renderEmployees();
             renderConnectedEmployees();
             renderHygieneWeeks();
             renderAccuracyWeeks();
             updateGoals();
-        }
-
-        init();
-
-        if (isViewOnlyMode) {
-            setInterval(async () => {
-                await loadFromCloud();
-                renderEmployees();
-                renderConnectedEmployees();
-                renderHygieneWeeks();
-                renderAccuracyWeeks();
-                updateGoals();
-            }, 30000);
-        }
-    </script>
-</body>
-</html>
+        }, 10000); // Обновление каждые 10 секунд
+    }
+</script>
+Merge

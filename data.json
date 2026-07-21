@@ -2,13 +2,13 @@
   "employees": [
     {
       "name": "Иванов И.И.",
-      "connected": false,
-      "hasData": false
+      "connected": true,
+      "hasData": true
     },
     {
       "name": "Петров П.П.",
-      "connected": false,
-      "hasData": false
+      "connected": true,
+      "hasData": true
     },
     {
       "name": "Сидоров С.С.",
@@ -22,21 +22,6 @@
     },
     {
       "name": "Новиков Н.Н.",
-      "connected": false,
-      "hasData": false
-    },
-    {
-      "name": "тест 12:25",
-      "connected": false,
-      "hasData": false
-    },
-    {
-      "name": "Люда привет",
-      "connected": false,
-      "hasData": false
-    },
-    {
-      "name": "Витя Витя",
       "connected": true,
       "hasData": true
     }
@@ -44,8 +29,8 @@
   "hygieneData": [],
   "accuracyData": [],
   "checkboxes": {
-    "text_recognition": true,
-    "file_recognition": true,
+    "text_recognition": false,
+    "file_recognition": false,
     "format_image": false,
     "format_excel": false,
     "format_word": false,
@@ -58,6 +43,6 @@
     "branch_self_analytics": false
   },
   "statuses": {},
-  "timestamp": "2026-07-21T10:34:31.417Z",
+  "timestamp": "2026-07-21T12:00:56.546Z",
   "version": "1.0"
 }

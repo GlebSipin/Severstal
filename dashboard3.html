@@ -12,34 +12,34 @@
         }
 
         body {
-            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background:
-                radial-gradient(circle at top left, rgba(0,102,204,0.12), transparent 28%),
-                linear-gradient(180deg, #f4f7fb 0%, #edf2f8 100%);
-            color: #243447;
-            padding: 24px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 51, 102, 0.88), rgba(0, 51, 102, 0.88)),
+                url('https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=1920&q=80') center/cover fixed;
+            color: #333;
+            padding: 20px;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 1440px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .header {
-            background: linear-gradient(135deg, #133a63 0%, #1d4f84 58%, #2f6aa5 100%);
+            background: linear-gradient(135deg, #003366 0%, #0051a3 100%);
             color: white;
-            padding: 36px 40px;
-            border-radius: 24px;
-            margin-bottom: 28px;
-            box-shadow: 0 20px 60px rgba(18, 44, 79, 0.22);
-            border: 1px solid rgba(255,255,255,0.14);
+            padding: 40px 50px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 51, 102, 0.4);
+            border: 3px solid #0066cc;
             position: relative;
             overflow: hidden;
         }
 
         .header h1 {
-            font-size: clamp(2rem, 3vw, 2.8rem);
+            font-size: 2.5em;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             position: relative;
@@ -54,17 +54,16 @@
         }
 
         .stat-card {
-            background: rgba(255,255,255,0.96);
-            padding: 24px;
-            border-radius: 18px;
-            box-shadow: 0 10px 32px rgba(31, 51, 73, 0.08);
-            border: 1px solid #d9e4f0;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            border-left: 5px solid #003366;
+            transition: transform 0.3s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 16px 36px rgba(31, 51, 73, 0.12);
+            transform: translateY(-5px);
         }
 
         .stat-card h3 {
@@ -77,18 +76,18 @@
         }
 
         .stat-value {
-            font-size: clamp(2rem, 3vw, 2.8rem);
+            font-size: 2.5em;
             font-weight: bold;
             color: #003366;
         }
 
         .goal-section {
-            background: rgba(255,255,255,0.98);
-            border-radius: 22px;
-            padding: 28px;
-            margin-bottom: 22px;
-            box-shadow: 0 14px 40px rgba(25, 52, 84, 0.08);
-            border: 1px solid #dce6f2;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            border: 2px solid #e6f2ff;
         }
 
         .goal-header {
@@ -97,20 +96,20 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 1px solid #dbe5f0;
+            border-bottom: 3px solid #003366;
         }
 
         .goal-title {
-            font-size: 1.65em;
-            color: #17324d;
-            font-weight: 700;
+            font-size: 1.8em;
+            color: #003366;
+            font-weight: bold;
             flex: 1;
         }
 
         .goal-progress {
-            font-size: 1.9em;
-            font-weight: 700;
-            color: #215d97;
+            font-size: 2em;
+            font-weight: bold;
+            color: #0066cc;
             margin-left: 20px;
         }
 
@@ -121,13 +120,13 @@
         }
 
         .status-badge {
-            padding: 9px 14px;
-            border-radius: 999px;
-            font-size: 0.88em;
-            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
 
         .status-badge.not-started {
@@ -178,11 +177,11 @@
         }
 
         .criterion {
-            background: #f7fafc;
+            background: #f8f9fa;
             padding: 20px;
-            border-radius: 18px;
-            margin-bottom: 18px;
-            border: 1px solid #e1e9f2;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0066cc;
         }
 
         .criterion-header {
@@ -214,22 +213,60 @@
         }
 
         .employee-item {
-            background: #ffffff;
-            padding: 16px;
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(28, 47, 68, 0.06);
-            border: 1px solid #ebf0f6;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .employee-header {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .employee-name-row {
+            display: flex;
             align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
         }
 
         .employee-name {
             font-weight: 600;
             color: #333;
+            word-break: break-word;
+        }
+
+        .delete-employee-btn {
+            border: none;
+            background: #fff1f2;
+            color: #b42318;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 6px rgba(180, 35, 24, 0.08);
+        }
+
+        .delete-employee-btn:hover {
+            background: #ffe4e8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(180, 35, 24, 0.14);
+        }
+
+        .delete-employee-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .checkbox-container {
@@ -276,13 +313,21 @@
         }
 
         .delete-week-btn {
-            background: #dc3545;
-            color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            background: #fff1f2;
+            color: #b42318;
+            padding: 12px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 6px rgba(180, 35, 24, 0.08);
+        }
+
+        .delete-week-btn:hover {
+            background: #ffe4e8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(180, 35, 24, 0.14);
         }
 
         .add-week-btn {
@@ -296,12 +341,11 @@
         }
 
         .chart-container {
-            background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
-            padding: 22px;
-            border-radius: 18px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
             margin-top: 20px;
             min-height: 350px;
-            border: 1px solid #e3ebf4;
         }
 
         .chart-bar-wrapper {
@@ -343,28 +387,15 @@
             color: #666;
         }
 
-        .admin-mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.96);
-            padding: 14px 22px;
-            border-radius: 999px;
-            box-shadow: 0 12px 30px rgba(23, 50, 77, 0.14);
-            z-index: 1000;
-            border: 1px solid #d9e4ef;
-        }
-
         .simple-checkbox {
-            background: #ffffff;
-            padding: 16px;
-            border-radius: 14px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 15px;
-            box-shadow: 0 6px 18px rgba(28, 47, 68, 0.06);
-            border: 1px solid #ebf0f6;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .simple-checkbox label {
@@ -746,8 +777,10 @@
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('view') === 'only') {
                 isViewOnlyMode = true;
-                document.getElementById('adminMode').checked = false;
-                document.querySelector('.admin-mode-toggle').style.display = 'none';
+                const adminMode = document.getElementById('adminMode');
+                if (adminMode) adminMode.checked = false;
+                const adminToggle = document.querySelector('.admin-mode-toggle');
+                if (adminToggle) adminToggle.style.display = 'none';
                 document.getElementById('viewOnlyBanner').classList.add('show');
                 document.body.classList.add('readonly');
                 return true;
@@ -771,10 +804,13 @@
             container.innerHTML = employees.map((emp, index) => `
                 <div class="employee-item">
                     <div class="employee-header">
-                        <div class="employee-name">${emp.name}</div>
+                        <div class="employee-name-row">
+                            <div class="employee-name">${emp.name}</div>
+                            <button class="delete-employee-btn" onclick="deleteEmployee(${index})" title="Удалить сотрудника" ${isViewOnlyMode ? 'disabled' : ''}>✕</button>
+                        </div>
                         <div class="checkbox-container">
                             <span class="checkbox-label">Подключен</span>
-                            <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})">
+                            <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})" ${isViewOnlyMode ? 'disabled' : ''}>
                         </div>
                     </div>
                 </div>
@@ -793,32 +829,18 @@
                 return `
                     <div class="employee-item">
                         <div class="employee-header">
-                            <div class="employee-name">${emp.name}</div>
+                            <div class="employee-name-row">
+                                <div class="employee-name">${emp.name}</div>
+                                <button class="delete-employee-btn" onclick="deleteEmployee(${index})" title="Удалить сотрудника" ${isViewOnlyMode ? 'disabled' : ''}>✕</button>
+                            </div>
                             <div class="checkbox-container">
                                 <span class="checkbox-label">Данные 2+ недели</span>
-                                <input type="checkbox" ${emp.hasData ? 'checked' : ''} onchange="toggleEmployeeData(${index})">
+                                <input type="checkbox" ${emp.hasData ? 'checked' : ''} onchange="toggleEmployeeData(${index})" ${isViewOnlyMode ? 'disabled' : ''}>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
-        }
-
-        function toggleEmployee(index) {
-            if (isViewOnlyMode) return;
-            employees[index].connected = !employees[index].connected;
-            if (!employees[index].connected) employees[index].hasData = false;
-            renderEmployees();
-            renderConnectedEmployees();
-            updateGoals();
-            saveToCloud();
-        }
-
-        function toggleEmployeeData(index) {
-            if (isViewOnlyMode) return;
-            employees[index].hasData = !employees[index].hasData;
-            updateGoals();
-            saveToCloud();
         }
 
         function addEmployee() {
@@ -831,6 +853,19 @@
                 updateGoals();
                 saveToCloud();
             }
+        }
+
+        function deleteEmployee(index) {
+            if (isViewOnlyMode) return;
+            const employee = employees[index];
+            if (!employee) return;
+            const confirmed = confirm(`Удалить сотрудника «${employee.name}» из Цели 1?`);
+            if (!confirmed) return;
+            employees.splice(index, 1);
+            renderEmployees();
+            renderConnectedEmployees();
+            updateGoals();
+            saveToCloud();
         }
 
         function renderHygieneWeeks() {

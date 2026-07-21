@@ -1,4 +1,3 @@
-# Demand_Fixation_Project
 <!DOCTYPE html>
 <html lang="ru">
 <head>

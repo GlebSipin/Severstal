@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дашборд реализации целей и соблюдения критериев успеха фиксации (Самара) - Северсталь</title>
+    <title>Дашборд реализации целей и критериев успеха пилота - Северсталь</title>
     <style>
         * {
             margin: 0;
@@ -15,7 +15,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: 
                 linear-gradient(rgba(0, 51, 102, 0.88), rgba(0, 51, 102, 0.88)),
-                url('https://paluba.media/wp-content/uploads/2023/12/fvgcaof6a1jch2apxe088a0yipze0weh-e1703056636676.jpg') center/cover fixed;
+                url('https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=1920&q=80') center/cover fixed;
             color: #333;
             padding: 20px;
             min-height: 100vh;
@@ -437,9 +437,9 @@
         .sync-status.error { border-color: #dc3545; background: #f8d7da; }
 
         .readonly * {
-    pointer-events: none !important;
-    /* только запрет кликов, без влияния на визуал */
-}
+            pointer-events: none !important;
+            opacity: 0.7 !important;
+        }
 
         @media (max-width: 768px) {
             .header h1 { font-size: 1.8em; }
@@ -455,11 +455,11 @@
 
     <div class="container">
         <div class="view-only-banner" id="viewOnlyBanner">
-            РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА
+            👁️ РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА
         </div>
 
         <div class="header">
-            <h1>📊 Дашборд реализации целей и соблюдения критериев успеха фиксации (Самара)</h1>
+            <h1>📊 Дашборд реализации целей и критериев успеха пилота</h1>
         </div>
 
         <div class="stats-overview">
@@ -481,7 +481,7 @@
             </div>
         </div>
 
-                <!-- Цель 1 -->
+        <!-- Цель 1 -->
         <div class="goal-section" id="goal1">
             <div class="goal-header">
                 <div class="goal-title">Цель 1: Подключение к фиксации спроса</div>
@@ -514,7 +514,22 @@
                     </div>
                     <div id="connectedEmployeesList"></div>
                 </div>
-                
+
+                <div class="criterion">
+                    <div class="criterion-header">
+                        <div class="criterion-title">Критерий успеха 2: Процесс гигиены данных (80%+ заполненность)</div>
+                        <div class="criterion-progress" id="goal1_crit2Progress">0%</div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="goal1_crit2Bar" style="width: 0%"></div>
+                    </div>
+                    <div class="weekly-data" id="hygieneWeeks"></div>
+                    <button class="add-week-btn" onclick="addHygieneWeek()">+ Добавить неделю</button>
+                    <div class="chart-container" id="hygieneChart"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Цель 2 -->
         <div class="goal-section" id="goal2">
             <div class="goal-header">

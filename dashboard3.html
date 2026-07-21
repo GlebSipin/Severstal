@@ -12,34 +12,34 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: 
-                linear-gradient(rgba(0, 51, 102, 0.88), rgba(0, 51, 102, 0.88)),
-                url('https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=1920&q=80') center/cover fixed;
-            color: #333;
-            padding: 20px;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(0,102,204,0.12), transparent 28%),
+                linear-gradient(180deg, #f4f7fb 0%, #edf2f8 100%);
+            color: #243447;
+            padding: 24px;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
         .header {
-            background: linear-gradient(135deg, #003366 0%, #0051a3 100%);
+            background: linear-gradient(135deg, #133a63 0%, #1d4f84 58%, #2f6aa5 100%);
             color: white;
-            padding: 40px 50px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 51, 102, 0.4);
-            border: 3px solid #0066cc;
+            padding: 36px 40px;
+            border-radius: 24px;
+            margin-bottom: 28px;
+            box-shadow: 0 20px 60px rgba(18, 44, 79, 0.22);
+            border: 1px solid rgba(255,255,255,0.14);
             position: relative;
             overflow: hidden;
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: clamp(2rem, 3vw, 2.8rem);
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             position: relative;
@@ -54,16 +54,17 @@
         }
 
         .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            border-left: 5px solid #003366;
-            transition: transform 0.3s ease;
+            background: rgba(255,255,255,0.96);
+            padding: 24px;
+            border-radius: 18px;
+            box-shadow: 0 10px 32px rgba(31, 51, 73, 0.08);
+            border: 1px solid #d9e4f0;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 36px rgba(31, 51, 73, 0.12);
         }
 
         .stat-card h3 {
@@ -76,18 +77,18 @@
         }
 
         .stat-value {
-            font-size: 2.5em;
+            font-size: clamp(2rem, 3vw, 2.8rem);
             font-weight: bold;
             color: #003366;
         }
 
         .goal-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
-            border: 2px solid #e6f2ff;
+            background: rgba(255,255,255,0.98);
+            border-radius: 22px;
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 14px 40px rgba(25, 52, 84, 0.08);
+            border: 1px solid #dce6f2;
         }
 
         .goal-header {
@@ -96,20 +97,20 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 3px solid #003366;
+            border-bottom: 1px solid #dbe5f0;
         }
 
         .goal-title {
-            font-size: 1.8em;
-            color: #003366;
-            font-weight: bold;
+            font-size: 1.65em;
+            color: #17324d;
+            font-weight: 700;
             flex: 1;
         }
 
         .goal-progress {
-            font-size: 2em;
-            font-weight: bold;
-            color: #0066cc;
+            font-size: 1.9em;
+            font-weight: 700;
+            color: #215d97;
             margin-left: 20px;
         }
 
@@ -120,13 +121,13 @@
         }
 
         .status-badge {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
+            padding: 9px 14px;
+            border-radius: 999px;
+            font-size: 0.88em;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
         }
 
         .status-badge.not-started {
@@ -177,11 +178,11 @@
         }
 
         .criterion {
-            background: #f8f9fa;
+            background: #f7fafc;
             padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #0066cc;
+            border-radius: 18px;
+            margin-bottom: 18px;
+            border: 1px solid #e1e9f2;
         }
 
         .criterion-header {
@@ -213,10 +214,11 @@
         }
 
         .employee-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(28, 47, 68, 0.06);
+            border: 1px solid #ebf0f6;
         }
 
         .employee-header {
@@ -294,11 +296,12 @@
         }
 
         .chart-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+            padding: 22px;
+            border-radius: 18px;
             margin-top: 20px;
             min-height: 350px;
+            border: 1px solid #e3ebf4;
         }
 
         .chart-bar-wrapper {
@@ -344,23 +347,24 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.96);
+            padding: 14px 22px;
+            border-radius: 999px;
+            box-shadow: 0 12px 30px rgba(23, 50, 77, 0.14);
             z-index: 1000;
-            border: 2px solid #003366;
+            border: 1px solid #d9e4ef;
         }
 
         .simple-checkbox {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 14px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 6px 18px rgba(28, 47, 68, 0.06);
+            border: 1px solid #ebf0f6;
         }
 
         .simple-checkbox label {

@@ -437,8 +437,9 @@
         .sync-status.error { border-color: #dc3545; background: #f8d7da; }
 
         .readonly * {
-            pointer-events: none !important;
-        }
+    pointer-events: none !important;
+    /* только запрет кликов, без влияния на визуал */
+}
 
         @media (max-width: 768px) {
             .header h1 { font-size: 1.8em; }

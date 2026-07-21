@@ -725,17 +725,31 @@ body {
     }
 
     function checkViewOnlyMode() {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('view') === 'only') {
-            isViewOnlyMode = true;
-            document.getElementById('adminMode').checked = false;
-            document.querySelector('.admin-mode-toggle').style.display = 'none';
-            document.getElementById('viewOnlyBanner').classList.add('show');
-            document.body.classList.add('readonly');
-            return true;
-        }
-        return false;
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('view') === 'only') {
+        isViewOnlyMode = true;
+        document.getElementById('adminMode').checked = false;
+        document.querySelector('.admin-mode-toggle').style.display = 'none';
+        document.getElementById('viewOnlyBanner').classList.add('show');
+        document.body.classList.add('readonly');
+        
+        // Полная блокировка всех интерактивных элементов
+        setTimeout(() => {
+            document.querySelectorAll('input, textarea, button, select, .status-badge').forEach(el => {
+                if (el.id !== 'adminMode') {
+                    el.disabled = true;
+                    el.style.pointerEvents = 'none';
+                    el.style.cursor = 'not-allowed';
+                    el.onclick = null;
+                    el.onchange = null;
+                }
+            });
+        }, 100);
+        
+        return true;
     }
+    return false;
+}
 
     function setGoalStatus(goalId, status) {
         if (isViewOnlyMode) return;
@@ -749,19 +763,22 @@ body {
     }
 
     function renderEmployees() {
-        const container = document.getElementById('employeeList');
-        container.innerHTML = employees.map((emp, index) => `
-            <div class="employee-item">
-                <div class="employee-header">
-                    <div class="employee-name">${emp.name}</div>
+    const container = document.getElementById('employeeList');
+    container.innerHTML = employees.map((emp, index) => `
+        <div class="employee-item">
+            <div class="employee-header">
+                <div class="employee-name">${emp.name}</div>
+                <div style="display: flex; gap: 10px; align-items: center;">
                     <div class="checkbox-container">
                         <span class="checkbox-label">Подключен</span>
-                        <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})">
+                        <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})" ${isViewOnlyMode ? 'disabled' : ''}>
                     </div>
+                    ${!isViewOnlyMode ? `<button class="delete-week-btn" onclick="deleteEmployee(${index})" style="padding: 8px 12px;">🗑️</button>` : ''}
                 </div>
             </div>
-        `).join('');
-    }
+        </div>
+    `).join('');
+}
 
     function renderConnectedEmployees() {
         const container = document.getElementById('connectedEmployeesList');
@@ -814,6 +831,17 @@ body {
             saveToCloud();
         }
     }
+       
+function deleteEmployee(index) {
+    if (isViewOnlyMode) return;
+    if (confirm(`Удалить сотрудника "${employees[index].name}"?`)) {
+        employees.splice(index, 1);
+        renderEmployees();
+        renderConnectedEmployees();
+        updateGoals();
+        saveToCloud();
+    }
+}
 
     function renderHygieneWeeks() {
         const container = document.getElementById('hygieneWeeks');

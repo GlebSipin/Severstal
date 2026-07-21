@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дашборд реализации целей и критериев успеха запуска фиксации с Самаре - Северсталь</title>
+    <title>Дашборд реализации целей и критериев успеха пилота - Северсталь</title>
     <style>
         * {
             margin: 0;
@@ -515,7 +515,6 @@
             flex: 1;
         }
 
-        /* Инструкция для просмотра */
         .view-only-banner {
             background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
             color: #000;
@@ -531,6 +530,34 @@
 
         .view-only-banner.show {
             display: block;
+        }
+
+        .export-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: 2px solid #28a745;
+        }
+
+        .export-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+        }
+
+        .export-btn:active {
+            transform: scale(0.98);
         }
 
         @media (max-width: 768px) {
@@ -573,13 +600,18 @@
         ✓ Изменения сохранены
     </div>
 
+    <!-- КНОПКА ЭКСПОРТА ДАННЫХ -->
+    <button id="exportBtn" class="export-btn" onclick="exportData()">
+        💾 Сохранить изменения для всех
+    </button>
+
     <div class="container">
         <div class="view-only-banner" id="viewOnlyBanner">
             👁️ РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА - Вы не можете вносить изменения
         </div>
 
         <div class="header">
-            <h1>📊 Дашборд реализации целей и критериев успеха фиксации в Самаре</h1>
+            <h1>📊 Дашборд реализации целей и критериев успеха пилота</h1>
         </div>
 
         <div class="stats-overview">
@@ -846,6 +878,7 @@
                 document.getElementById('adminMode').disabled = true;
                 document.querySelector('.admin-mode-toggle').style.display = 'none';
                 document.getElementById('viewOnlyBanner').classList.add('show');
+                document.getElementById('exportBtn').style.display = 'none';
                 document.body.classList.add('readonly');
                 
                 // Блокируем все интерактивные элементы
@@ -860,6 +893,53 @@
                 return true;
             }
             return false;
+        }
+
+        // Функция экспорта данных
+        function exportData() {
+            // Собираем все данные
+            const checkboxes = {};
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (cb.id && cb.id !== 'adminMode') {
+                    checkboxes[cb.id] = cb.checked;
+                }
+            });
+
+            const data = {
+                employees: employees,
+                hygieneData: hygieneData,
+                accuracyData: accuracyData,
+                checkboxes: checkboxes,
+                statuses: statuses,
+                timestamp: new Date().toISOString(),
+                version: '1.0'
+            };
+
+            // Создаем красивый JSON с отступами
+            const jsonString = JSON.stringify(data, null, 2);
+            
+            // Создаем файл для скачивания
+            const blob = new Blob([jsonString], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            // Показываем уведомление
+            const btn = document.getElementById('exportBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Файл скачан!';
+            btn.style.background = '#0066cc';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '#28a745';
+            }, 3000);
+            
+            // Показываем инструкцию
+            alert('✅ Файл data.json скачан!\n\n📋 ЧТО ДЕЛАТЬ ДАЛЬШЕ:\n\n1. Откройте GitHub: github.com/GlebSeverstal/Demand_Fixation_Project\n2. Нажмите "Add file" → "Upload files"\n3. Перетащите файл data.json\n4. Нажмите "Commit changes"\n\n💡 После этого все пользователи увидят обновления!');
         }
 
         // Загрузка данных из localStorage
@@ -890,7 +970,7 @@
 
         // Сохранение данных
         function saveData() {
-            if (isViewOnlyMode) return; // Не сохраняем в режиме просмотра
+            if (isViewOnlyMode) return;
             
             const checkboxes = {};
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
@@ -908,7 +988,6 @@
 
             localStorage.setItem('dashboardData', JSON.stringify(data));
             
-            // Показать индикатор сохранения
             const indicator = document.getElementById('saveIndicator');
             indicator.classList.add('show');
             setTimeout(() => indicator.classList.remove('show'), 2000);
@@ -1197,7 +1276,6 @@
             const connectedCount = employees.filter(e => e.connected).length;
             const connectionPercentage = employees.length > 0 ? (connectedCount / employees.length) * 100 : 0;
             
-            // Критерий 1: Сотрудники с данными 2+ недели
             const connectedEmps = employees.filter(e => e.connected);
             const withDataCount = connectedEmps.filter(e => e.hasData).length;
             const withDataPercentage = connectedEmps.length > 0 ? (withDataCount / connectedEmps.length) * 100 : 0;
@@ -1206,15 +1284,12 @@
             document.getElementById('goal1_crit1Bar').style.width = withDataPercentage + '%';
             document.getElementById('goal1_crit1Bar').textContent = Math.round(withDataPercentage) + '%';
 
-            // Критерий 2: Гигиена данных
-            const hygieneSuccess = hygieneData.length > 0 && hygieneData[hygieneData.length - 1].percentage >= 80;
             const hygienePercentage = hygieneData.length > 0 ? Math.min(hygieneData[hygieneData.length - 1].percentage, 100) : 0;
             
             document.getElementById('goal1_crit2Progress').textContent = Math.round(hygienePercentage) + '%';
             document.getElementById('goal1_crit2Bar').style.width = hygienePercentage + '%';
             document.getElementById('goal1_crit2Bar').textContent = Math.round(hygienePercentage) + '%';
 
-            // Общий прогресс Цели 1
             const goal1Progress = (connectionPercentage + withDataPercentage + hygienePercentage) / 3;
             
             document.getElementById('goal1Progress').textContent = Math.round(goal1Progress) + '%';
@@ -1226,7 +1301,6 @@
             const fileRecognition = document.getElementById('file_recognition').checked;
             const recognitionProgress = ((textRecognition ? 50 : 0) + (fileRecognition ? 50 : 0));
 
-            // Критерий 1: Форматы
             const formats = ['format_image', 'format_excel', 'format_word', 'format_pdf'];
             const formatsCompleted = formats.filter(id => document.getElementById(id).checked).length;
             const formatsPercentage = (formatsCompleted / formats.length) * 100;
@@ -1235,14 +1309,12 @@
             document.getElementById('goal2_crit1Bar').style.width = formatsPercentage + '%';
             document.getElementById('goal2_crit1Bar').textContent = Math.round(formatsPercentage) + '%';
 
-            // Критерий 2: Точность
             const accuracyPercentage = accuracyData.length > 0 ? Math.min(accuracyData[accuracyData.length - 1].percentage, 100) : 0;
             
             document.getElementById('goal2_crit2Progress').textContent = Math.round(accuracyPercentage) + '%';
             document.getElementById('goal2_crit2Bar').style.width = accuracyPercentage + '%';
             document.getElementById('goal2_crit2Bar').textContent = Math.round(accuracyPercentage) + '%';
 
-            // Общий прогресс Цели 2
             const goal2Progress = (recognitionProgress + formatsPercentage + accuracyPercentage) / 3;
             
             document.getElementById('goal2Progress').textContent = Math.round(goal2Progress) + '%';
@@ -1289,6 +1361,7 @@
             document.getElementById('completedGoals').textContent = completedGoals + '/4';
 
             const allCriteriaCount = 8;
+            const hygieneSuccess = hygieneData.length > 0 && hygieneData[hygieneData.length - 1].percentage >= 80;
             const completedCriteria = [
                 withDataPercentage >= 80,
                 hygieneSuccess,
@@ -1315,88 +1388,41 @@
         if (!isViewOnlyMode) {
             setInterval(saveData, 30000);
         }
-    </script>
-    <!-- КНОПКА ЭКСПОРТА ДАННЫХ -->
-<button id="exportBtn" class="export-btn" onclick="exportData()">
-    💾 Сохранить изменения для всех
-</button>
 
-<style>
-.export-btn {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
-    z-index: 1000;
-    transition: all 0.3s ease;
-    border: 2px solid #28a745;
-}
+        // Прием данных от view.html
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'loadData' && isViewOnlyMode) {
+                console.log('Получены данные от view.html');
+                const data = event.data.data;
+                
+                employees = data.employees || employees;
+                hygieneData = data.hygieneData || [];
+                accuracyData = data.accuracyData || [];
+                statuses = data.statuses || {};
+                
+                // Восстановление чекбоксов
+                Object.keys(data.checkboxes || {}).forEach(id => {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) checkbox.checked = data.checkboxes[id];
+                });
+                
+                renderEmployees();
+                renderConnectedEmployees();
+                renderHygieneWeeks();
+                renderAccuracyWeeks();
+                restoreStatuses();
+                updateGoals();
+                
+                document.getElementById('lastUpdate').textContent = new Date(data.timestamp).toLocaleString('ru-RU');
+            }
+        });
 
-.export-btn:hover {
-    background: #218838;
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
-}
-
-.export-btn:active {
-    transform: scale(0.98);
-}
-</style>
-
-<script>
-function exportData() {
-    // Собираем все данные
-    const checkboxes = {};
-    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        if (cb.id && cb.id !== 'adminMode') {
-            checkboxes[cb.id] = cb.checked;
+        // Запрашиваем данные при загрузке в режиме просмотра
+        if (isViewOnlyMode) {
+            setTimeout(() => {
+                window.parent.postMessage({type: 'requestData'}, '*');
+            }, 1000);
         }
-    });
-
-    const data = {
-        employees: employees,
-        hygieneData: hygieneData,
-        accuracyData: accuracyData,
-        checkboxes: checkboxes,
-        statuses: statuses,
-        timestamp: new Date().toISOString(),
-        version: '1.0'
-    };
-
-    // Создаем красивый JSON с отступами
-    const jsonString = JSON.stringify(data, null, 2);
-    
-    // Создаем файл для скачивания
-    const blob = new Blob([jsonString], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    
-    // Показываем уведомление
-    const btn = document.getElementById('exportBtn');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '✅ Файл скачан!';
-    btn.style.background = '#0066cc';
-    
-    setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.style.background = '#28a745';
-    }, 3000);
-    
-    // Показываем инструкцию
-    alert('✅ Файл data.json скачан!\n\n📋 ЧТО ДЕЛАТЬ ДАЛЬШЕ:\n\n1. Откройте GitHub: github.com/GlebSeverstal/Demand_Fixation_Project\n2. Нажмите "Add file" → "Upload files"\n3. Перетащите файл data.json\n4. Нажмите "Commit changes"\n\n💡 После этого все пользователи увидят обновления!');
-}
-</script>
+    </script>
 </body>
 </html>

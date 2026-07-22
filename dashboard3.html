@@ -852,13 +852,9 @@
 }
 
         function addEmployee() {
-    // не даём добавлять в режиме только просмотра
-    if (isViewOnlyMode) return;
-
     const name = prompt('Введите ФИО сотрудника:');
     if (!name) return;
 
-    // гарантируем, что employees — это массив
     if (!Array.isArray(employees)) {
         employees = [];
     }
@@ -1099,27 +1095,27 @@
         }
 
         async function init() {
-            checkViewOnlyMode();
-            await loadFromCloud();
-            renderEmployees();
-            renderConnectedEmployees();
-            renderHygieneWeeks();
-            renderAccuracyWeeks();
-            updateGoals();
-        }
+    checkViewOnlyMode();
+    await loadFromCloud();
+    renderEmployees();
+    renderConnectedEmployees();
+    renderHygieneWeeks();
+    renderAccuracyWeeks();
+    updateGoals();
+}
 
-        init();
+init();
 
-        if (isViewOnlyMode) {
-            setInterval(async () => {
-                await loadFromCloud();
-                renderEmployees();
-                renderConnectedEmployees();
-                renderHygieneWeeks();
-                renderAccuracyWeeks();
-                updateGoals();
-            }, 10000); // Обновление каждые 10 секунд
-        }
+if (isViewOnlyMode) {
+    setInterval(async () => {
+        await loadFromCloud();
+        renderEmployees();
+        renderConnectedEmployees();
+        renderHygieneWeeks();
+        renderAccuracyWeeks();
+        updateGoals();
+    }, 10000); // Обновление каждые 10 секунд
+}
     </script>
 </body>
 </html>

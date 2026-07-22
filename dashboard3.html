@@ -444,27 +444,13 @@
             cursor: not-allowed !important;
         }
 
-        @media (max-width: 768px) {
-            .header h1 { font-size: 1.8em; }
-            .goal-header { flex-direction: column; align-items: flex-start; }
-            .employee-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="admin-mode-toggle">
-        <label>
-            <input type="checkbox" id="adminMode" checked> Режим редактирования
-        </label>
-    </div>
-
     <div class="sync-status" id="syncStatus">
         <span id="syncStatusText">🔄 Синхронизация...</span>
     </div>
 
     <div class="container">
         <div class="view-only-banner" id="viewOnlyBanner">
-            👁️ РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА
+            РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА
         </div>
 
         <div class="header">

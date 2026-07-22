@@ -852,15 +852,23 @@
 }
 
         function addEmployee() {
+    // не даём добавлять в режиме только просмотра
     if (isViewOnlyMode) return;
+
     const name = prompt('Введите ФИО сотрудника:');
-    if (name) {
-        employees.push({ name, connected: false, hasData: false });
-        renderEmployees();
-        renderConnectedEmployees();
-        updateGoals();
-        saveToCloud();
+    if (!name) return;
+
+    // гарантируем, что employees — это массив
+    if (!Array.isArray(employees)) {
+        employees = [];
     }
+
+    employees.push({ name, connected: false, hasData: false });
+
+    renderEmployees();
+    renderConnectedEmployees();
+    updateGoals();
+    saveToCloud();
 }
         function deleteEmployee(index) {
     if (isViewOnlyMode) return;

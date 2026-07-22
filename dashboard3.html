@@ -801,16 +801,25 @@
             saveToCloud();
         }
 
-        function renderEmployees() {
-    const container = document.getElementById('employeeList');
-    container.innerHTML = employees.map((emp, index) => `
+        function renderConnectedEmployees() {
+    const container = document.getElementById('connectedEmployeesList');
+
+    const connected = employees
+        .map((emp, index) => ({ ...emp, index }))
+        .filter(emp => emp.connected);
+
+    if (connected.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Нет подключенных сотрудников</p>';
+        return;
+    }
+
+    container.innerHTML = connected.map(emp => `
         <div class="employee-item">
             <div class="employee-header">
                 <div class="employee-name">${emp.name}</div>
                 <div class="checkbox-container">
-                    <span class="checkbox-label">Подключен</span>
-                    <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})">
-                    <button class="delete-employee-btn" onclick="deleteEmployee(${index})" title="Удалить сотрудника">✕</button>
+                    <span class="checkbox-label">Данные 2+ недели</span>
+                    <input type="checkbox" ${emp.hasData ? 'checked' : ''} onchange="toggleEmployeeData(${emp.index})">
                 </div>
             </div>
         </div>

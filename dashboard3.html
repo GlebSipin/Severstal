@@ -217,54 +217,30 @@
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .employee-item:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
 
         .employee-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .employee-name-row {
-            display: flex;
             align-items: center;
-            gap: 10px;
-            min-width: 0;
-            flex: 1;
         }
 
         .employee-name {
             font-weight: 600;
             color: #333;
-            word-break: break-word;
+            flex: 1;
         }
 
-        .delete-employee-btn {
-    background: #dc3545;
-    color: white;
-    border: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.9em;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease, transform 0.2s ease;
-}
-.delete-employee-btn:hover {
-    background: #b02a37;
-    transform: scale(1.1);
-}
-
-        .delete-employee-btn:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-            transform: none;
+        .employee-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
         .checkbox-container {
@@ -310,25 +286,27 @@
             margin-top: 0;
         }
 
-        .delete-employee-btn {
+        .delete-week-btn, .delete-employee-btn {
             background: #dc3545;
             color: white;
             border: none;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
+            padding: 10px 16px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.9em;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease, transform 0.2s ease;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(220, 53, 69, 0.3);
         }
-        .delete-employee-btn:hover {
-            background: #b02a37;
-            transform: scale(1.1);
+
+        .delete-week-btn:hover, .delete-employee-btn:hover {
+            background: #c82333;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+        }
+
+        .delete-employee-btn {
+            padding: 8px 12px;
         }
 
         .add-week-btn {
@@ -339,6 +317,13 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .add-week-btn:hover {
+            background: #0051a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
         }
 
         .chart-container {
@@ -386,6 +371,18 @@
             font-size: 0.85em;
             margin-top: 8px;
             color: #666;
+        }
+
+        .admin-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            border: 2px solid #003366;
         }
 
         .simple-checkbox {
@@ -437,19 +434,29 @@
         .sync-status.synced { border-color: #28a745; background: #d4edda; }
         .sync-status.error { border-color: #dc3545; background: #f8d7da; }
 
-        .readonly * {
-    pointer-events: none !important;
-    /* только запрет кликов, без влияния на визуал */
-}
-
+        .readonly input,
+        .readonly textarea,
+        .readonly button,
+        .readonly select,
+        .readonly .status-badge {
+            pointer-events: none !important;
+            opacity: 0.6 !important;
+            cursor: not-allowed !important;
+        }
 
         @media (max-width: 768px) {
             .header h1 { font-size: 1.8em; }
             .goal-header { flex-direction: column; align-items: flex-start; }
+            .employee-header { flex-direction: column; align-items: flex-start; gap: 10px; }
         }
     </style>
 </head>
 <body>
+    <div class="admin-mode-toggle">
+        <label>
+            <input type="checkbox" id="adminMode" checked> Режим редактирования
+        </label>
+    </div>
 
     <div class="sync-status" id="syncStatus">
         <span id="syncStatusText">🔄 Синхронизация...</span>
@@ -457,7 +464,7 @@
 
     <div class="container">
         <div class="view-only-banner" id="viewOnlyBanner">
-            РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА
+            👁️ РЕЖИМ ТОЛЬКО ДЛЯ ПРОСМОТРА
         </div>
 
         <div class="header">
@@ -485,56 +492,52 @@
 
         <!-- Цель 1 -->
         <div class="goal-section" id="goal1">
-    <div class="goal-header">
-        <div class="goal-title">Цель 1: Подключение к фиксации спроса</div>
-        <div class="status-selector">
-            <div class="status-badge not-started active" onclick="setGoalStatus('goal1', 'not-started')" data-status="not-started">Не начато</div>
-            <div class="status-badge in-progress" onclick="setGoalStatus('goal1', 'in-progress')" data-status="in-progress">В работе</div>
-            <div class="status-badge completed" onclick="setGoalStatus('goal1', 'completed')" data-status="completed">Выполнено</div>
-        </div>
-        <div id="goal1Progress" class="goal-progress">0%</div>
-    </div>
-
-    <div class="progress-bar-container">
-        <div id="goal1Bar" class="progress-bar" style="width: 0%">0%</div>
-    </div>
-
-    <p style="color: #666; margin-bottom: 20px;">
-        <strong>Цель:</strong> Подключить всех сотрудников к фиксации спроса из канала почта.
-    </p>
-
-    <div class="employee-list" id="employeeList"></div>
-
-    <button class="add-week-btn" onclick="addEmployee()" style="margin-top: 15px;">
-        + Добавить сотрудника
-    </button>
-
-    <div class="criteria-section">
-        <div class="criterion">
-            <div class="criterion-header">
-                <div class="criterion-title">Критерий успеха 1: 80%+ сотрудников имеют данные за 2+ недели</div>
-                <div id="goal1crit1Progress" class="criterion-progress">0%</div>
+            <div class="goal-header">
+                <div class="goal-title">Цель 1: Подключение к фиксации спроса</div>
+                <div class="status-selector">
+                    <div class="status-badge not-started" onclick="setGoalStatus('goal1', 'not-started')" data-status="not-started">Не начато</div>
+                    <div class="status-badge in-progress" onclick="setGoalStatus('goal1', 'in-progress')" data-status="in-progress">В работе</div>
+                    <div class="status-badge completed" onclick="setGoalStatus('goal1', 'completed')" data-status="completed">Выполнено</div>
+                </div>
+                <div class="goal-progress" id="goal1Progress">0%</div>
             </div>
             <div class="progress-bar-container">
-                <div id="goal1crit1Bar" class="progress-bar" style="width: 0%">0%</div>
+                <div class="progress-bar" id="goal1Bar" style="width: 0%"></div>
             </div>
-            <div id="connectedEmployeesList" class="employee-list-connected"></div>
-        </div>
 
-        <div class="criterion">
-            <div class="criterion-header">
-                <div class="criterion-title">Критерий успеха 2: Процесс гигиены данных (80%+ заполненность)</div>
-                <div id="goal1crit2Progress" class="criterion-progress">0%</div>
+            <p style="color: #666; margin-bottom: 20px;">
+                <strong>Цель:</strong> Подключить всех сотрудников к фиксации спроса из канала почта
+            </p>
+
+            <div class="employee-list" id="employeeList"></div>
+            <button class="add-week-btn" onclick="addEmployee()" style="margin-top: 15px;">+ Добавить сотрудника</button>
+
+            <div class="criteria-section">
+                <div class="criterion">
+                    <div class="criterion-header">
+                        <div class="criterion-title">Критерий успеха 1: 80%+ сотрудников имеют данные за 2+ недели</div>
+                        <div class="criterion-progress" id="goal1_crit1Progress">0%</div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="goal1_crit1Bar" style="width: 0%"></div>
+                    </div>
+                    <div id="connectedEmployeesList"></div>
+                </div>
+
+                <div class="criterion">
+                    <div class="criterion-header">
+                        <div class="criterion-title">Критерий успеха 2: Процесс гигиены данных (80%+ заполненность)</div>
+                        <div class="criterion-progress" id="goal1_crit2Progress">0%</div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="goal1_crit2Bar" style="width: 0%"></div>
+                    </div>
+                    <div class="weekly-data" id="hygieneWeeks"></div>
+                    <button class="add-week-btn" onclick="addHygieneWeek()">+ Добавить неделю</button>
+                    <div class="chart-container" id="hygieneChart"></div>
+                </div>
             </div>
-            <div class="progress-bar-container">
-                <div id="goal1crit2Bar" class="progress-bar" style="width: 0%">0%</div>
-            </div>
-            <div id="hygieneWeeks" class="weekly-data"></div>
-            <button class="add-week-btn" onclick="addHygieneWeek()">+ Добавить неделю</button>
-            <div id="hygieneChart" class="chart-container"></div>
         </div>
-    </div>
-</div>
 
         <!-- Цель 2 -->
         <div class="goal-section" id="goal2">
@@ -697,172 +700,338 @@
         const FIREBASE_URL = 'https://severstal-dashboard-default-rtdb.europe-west1.firebasedatabase.app';
         
         let employees = [];
-let hygieneData = [];
-// accuracyData, statuses у тебя уже есть — не трогаем
+        let hygieneData = [];
+        let accuracyData = [];
+        let statuses = {};
+        let isViewOnlyMode = false;
 
-function renderEmployees() {
-    const container = document.getElementById('employeeList');
-    if (!Array.isArray(employees) || employees.length === 0) {
-        container.innerHTML = '<p style="color:#999;">Сотрудники пока не добавлены</p>';
-        return;
-    }
-    container.innerHTML = employees.map((emp, index) => `
-        <div class="employee-item">
-            <div class="employee-header">
-                <div class="employee-name">${emp.name}</div>
-                <div class="checkbox-container">
-                    <span class="checkbox-label">Подключен</span>
-                    <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})">
-                    <button class="delete-employee-btn" onclick="deleteEmployee(${index})" title="Удалить сотрудника">✕</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function renderConnectedEmployees() {
-    const container = document.getElementById('connectedEmployeesList');
-
-    const connected = employees
-        .map((emp, index) => ({ ...emp, index }))
-        .filter(emp => emp.connected);
-
-    if (connected.length === 0) {
-        container.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Нет подключенных сотрудников</p>';
-        return;
-    }
-
-    container.innerHTML = connected.map(emp => `
-        <div class="employee-item">
-            <div class="employee-header">
-                <div class="employee-name">${emp.name}</div>
-                <div class="checkbox-container">
-                    <span class="checkbox-label">Данные 2+ недели</span>
-                    <input type="checkbox" ${emp.hasData ? 'checked' : ''} onchange="toggleEmployeeData(${emp.index})">
-                    <button class="delete-employee-btn" onclick="deleteEmployee(${emp.index})" title="Удалить сотрудника">✕</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function toggleEmployee(index) {
-    employees[index].connected = !employees[index].connected;
-    if (!employees[index].connected) employees[index].hasData = false;
-    renderEmployees();
-    renderConnectedEmployees();
-    updateGoals();
-    saveToCloud();
-}
-
-function toggleEmployeeData(index) {
-    employees[index].hasData = !employees[index].hasData;
-    renderConnectedEmployees();
-    updateGoals();
-    saveToCloud();
-}
-
-function addEmployee() {
-    const name = prompt('Введите ФИО сотрудника:');
-    if (!name) return;
-
-    if (!Array.isArray(employees)) employees = [];
-    employees.push({ name, connected: false, hasData: false });
-
-    renderEmployees();
-    renderConnectedEmployees();
-    updateGoals();
-    saveToCloud();
-}
-
-function deleteEmployee(index) {
-    if (!confirm('Удалить сотрудника?')) return;
-    employees.splice(index, 1);
-    renderEmployees();
-    renderConnectedEmployees();
-    updateGoals();
-    saveToCloud();
-}
-
-// гигиена данных
-function renderHygieneWeeks() {
-    const container = document.getElementById('hygieneWeeks');
-    if (!Array.isArray(hygieneData)) hygieneData = [];
-    container.innerHTML = hygieneData.map((week, index) => `
-        <div class="week-entry">
-            <input type="text" value="${week.week || ''}" onchange="updateHygieneWeek(${index}, 'week', this.value)" placeholder="Неделя">
-            <input type="number" value="${week.percentage || 0}" onchange="updateHygieneWeek(${index}, 'percentage', this.value)" placeholder="% заполненности" min="0" max="100">
-            <button class="delete-week-btn" onclick="deleteHygieneWeek(${index})">Удалить</button>
-        </div>
-    `).join('');
-    renderHygieneChart();
-}
-
-function addHygieneWeek() {
-    if (!Array.isArray(hygieneData)) hygieneData = [];
-    hygieneData.push({ week: '', percentage: 0 });
-    renderHygieneWeeks();
-    saveToCloud();
-}
-
-function deleteHygieneWeek(index) {
-    if (!confirm('Удалить неделю?')) return;
-    hygieneData.splice(index, 1);
-    renderHygieneWeeks();
-    updateGoals();
-    saveToCloud();
-}
-
-function updateHygieneWeek(index, field, value) {
-    if (field === 'percentage') {
-        hygieneData[index][field] = parseInt(value || '0', 10);
-    } else {
-        hygieneData[index][field] = value;
-    }
-    renderHygieneWeeks();
-    updateGoals();
-    saveToCloud();
-}
-
-function renderHygieneChart() {
-    const container = document.getElementById('hygieneChart');
-    if (!hygieneData || hygieneData.length === 0) {
-        container.innerHTML = '<p style="text-align:center;color:#999;padding:50px;">Недели гигиены пока не добавлены</p>';
-        return;
-    }
-
-    const chartHTML = hygieneData.map((week, index) => {
-        const pct = week.percentage || 0;
-        const height = Math.max(Math.min(pct, 100) * 2.5, 30);
-        const color =
-            pct >= 80 ? '#28a745' :
-            pct >= 60 ? '#ffc107' :
-                        '#dc3545';
-
-        let diffHTML = '';
-        if (index > 0) {
-            const diff = pct - (hygieneData[index - 1].percentage || 0);
-            const arrow = diff >= 0 ? '▲' : '▼';
-            const diffClass = diff >= 0 ? 'positive' : 'negative';
-            diffHTML = `<div class="chart-diff ${diffClass}">${arrow} ${Math.abs(diff)}%</div>`;
+        function showSyncStatus(text, type) {
+            const status = document.getElementById('syncStatus');
+            const statusText = document.getElementById('syncStatusText');
+            statusText.textContent = text;
+            status.className = 'sync-status show ' + type;
+            setTimeout(() => status.classList.remove('show'), 3000);
         }
 
-        return `
-            <div class="chart-bar-wrapper">
-                <div class="chart-bar" style="background:${color};height:${height}px;">
-                    ${diffHTML}
-                    <div class="chart-value">${pct}%</div>
-                </div>
-                <div class="chart-label">${week.week || ('Неделя ' + (index + 1))}</div>
-            </div>
-        `;
-    }).join('');
+        async function loadFromCloud() {
+            try {
+                showSyncStatus('🔄 Загрузка данных...', 'syncing');
+                const response = await fetch(`${FIREBASE_URL}/dashboard.json`);
+                
+                if (!response.ok) throw new Error('Ошибка загрузки');
+                
+                const data = await response.json();
+                
+                if (data) {
+                    employees = data.employees || [];
+                    hygieneData = data.hygieneData || [];
+                    accuracyData = data.accuracyData || [];
+                    statuses = data.statuses || {};
+                    
+                    Object.keys(data.checkboxes || {}).forEach(id => {
+                        const checkbox = document.getElementById(id);
+                        if (checkbox) checkbox.checked = data.checkboxes[id];
+                    });
+                    
+                    document.getElementById('lastUpdate').textContent = new Date(data.timestamp).toLocaleString('ru-RU');
+                    showSyncStatus('✅ Данные загружены', 'synced');
+                } else {
+                    showSyncStatus('ℹ️ Нет сохраненных данных', 'syncing');
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showSyncStatus('⚠️ Ошибка загрузки', 'error');
+                return false;
+            }
+        }
 
-    container.innerHTML = `
-        <div style="display:flex;align-items:flex-end;justify-content:center;height:300px;padding-top:30px;">
-            ${chartHTML}
-        </div>`;
-}
+        async function saveToCloud() {
+            if (isViewOnlyMode) return;
+            
+            try {
+                const checkboxes = {};
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    if (cb.id && cb.id !== 'adminMode') checkboxes[cb.id] = cb.checked;
+                });
+
+                const data = {
+                    employees,
+                    hygieneData,
+                    accuracyData,
+                    checkboxes,
+                    statuses,
+                    timestamp: new Date().toISOString()
+                };
+
+                showSyncStatus('🔄 Сохранение...', 'syncing');
+                
+                const response = await fetch(`${FIREBASE_URL}/dashboard.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error('Ошибка сохранения');
+                
+                showSyncStatus('✅ Сохранено!', 'synced');
+                document.getElementById('lastUpdate').textContent = new Date().toLocaleString('ru-RU');
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showSyncStatus('❌ Ошибка сохранения', 'error');
+            }
+        }
+
+        function checkViewOnlyMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('view') === 'only') {
+                isViewOnlyMode = true;
+                document.getElementById('adminMode').checked = false;
+                document.querySelector('.admin-mode-toggle').style.display = 'none';
+                document.getElementById('viewOnlyBanner').classList.add('show');
+                document.body.classList.add('readonly');
+                
+                // Полная блокировка всех интерактивных элементов
+                setTimeout(() => {
+                    // Блокируем все input, textarea, button, select
+                    document.querySelectorAll('input, textarea, button, select').forEach(el => {
+                        el.disabled = true;
+                        el.style.pointerEvents = 'none';
+                        el.style.cursor = 'not-allowed';
+                    });
+                    
+                    // Блокируем статусы
+                    document.querySelectorAll('.status-badge').forEach(badge => {
+                        badge.style.pointerEvents = 'none';
+                        badge.style.cursor = 'not-allowed';
+                        badge.onclick = null;
+                    });
+                }, 500);
+                
+                return true;
+            }
+            return false;
+        }
+
+        function setGoalStatus(goalId, status) {
+            if (isViewOnlyMode) return;
+            statuses[goalId] = status;
+            const badges = document.querySelector(`#${goalId} .status-selector`).querySelectorAll('.status-badge');
+            badges.forEach(badge => {
+                badge.classList.remove('active');
+                if (badge.dataset.status === status) badge.classList.add('active');
+            });
+            saveToCloud();
+        }
+
+        function renderEmployees() {
+            const container = document.getElementById('employeeList');
+            container.innerHTML = employees.map((emp, index) => `
+                <div class="employee-item">
+                    <div class="employee-header">
+                        <div class="employee-name">${emp.name}</div>
+                        <div class="employee-actions">
+                            <div class="checkbox-container">
+                                <span class="checkbox-label">Подключен</span>
+                                <input type="checkbox" ${emp.connected ? 'checked' : ''} onchange="toggleEmployee(${index})">
+                            </div>
+                            <button class="delete-employee-btn" onclick="deleteEmployee(${index})" title="Удалить сотрудника">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderConnectedEmployees() {
+            const container = document.getElementById('connectedEmployeesList');
+            const connected = employees.filter(e => e.connected);
+            if (connected.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Нет подключенных сотрудников</p>';
+                return;
+            }
+            container.innerHTML = connected.map(emp => {
+                const index = employees.indexOf(emp);
+                return `
+                    <div class="employee-item">
+                        <div class="employee-header">
+                            <div class="employee-name">${emp.name}</div>
+                            <div class="checkbox-container">
+                                <span class="checkbox-label">Данные 2+ недели</span>
+                                <input type="checkbox" ${emp.hasData ? 'checked' : ''} onchange="toggleEmployeeData(${index})">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleEmployee(index) {
+            if (isViewOnlyMode) return;
+            employees[index].connected = !employees[index].connected;
+            if (!employees[index].connected) employees[index].hasData = false;
+            renderEmployees();
+            renderConnectedEmployees();
+            updateGoals();
+            saveToCloud();
+        }
+
+        function toggleEmployeeData(index) {
+            if (isViewOnlyMode) return;
+            employees[index].hasData = !employees[index].hasData;
+            updateGoals();
+            saveToCloud();
+        }
+
+        function addEmployee() {
+            if (isViewOnlyMode) return;
+            const name = prompt('Введите ФИО сотрудника:');
+            if (name) {
+                employees.push({ name, connected: false, hasData: false });
+                renderEmployees();
+                renderConnectedEmployees();
+                updateGoals();
+                saveToCloud();
+            }
+        }
+
+        function deleteEmployee(index) {
+            if (isViewOnlyMode) return;
+            if (confirm(`Удалить сотрудника "${employees[index].name}"?`)) {
+                employees.splice(index, 1);
+                renderEmployees();
+                renderConnectedEmployees();
+                updateGoals();
+                saveToCloud();
+            }
+        }
+
+        function renderHygieneWeeks() {
+            const container = document.getElementById('hygieneWeeks');
+            container.innerHTML = hygieneData.map((week, index) => `
+                <div class="week-entry">
+                    <input type="text" value="${week.week}" onchange="updateHygieneWeek(${index}, 'week', this.value)" placeholder="Неделя">
+                    <input type="number" value="${week.percentage}" onchange="updateHygieneWeek(${index}, 'percentage', this.value)" placeholder="%" min="0" max="100">
+                    <button class="delete-week-btn" onclick="deleteHygieneWeek(${index})">🗑️</button>
+                </div>
+            `).join('');
+            renderHygieneChart();
+        }
+
+        function addHygieneWeek() {
+            if (isViewOnlyMode) return;
+            hygieneData.push({ week: '', percentage: 0 });
+            renderHygieneWeeks();
+            saveToCloud();
+        }
+
+        function deleteHygieneWeek(index) {
+            if (isViewOnlyMode) return;
+            if (confirm('Удалить эту неделю?')) {
+                hygieneData.splice(index, 1);
+                renderHygieneWeeks();
+                updateGoals();
+                saveToCloud();
+            }
+        }
+
+        function updateHygieneWeek(index, field, value) {
+            if (isViewOnlyMode) return;
+            hygieneData[index][field] = field === 'percentage' ? parseInt(value) || 0 : value;
+            renderHygieneWeeks();
+            updateGoals();
+            saveToCloud();
+        }
+
+        function renderHygieneChart() {
+            const container = document.getElementById('hygieneChart');
+            if (hygieneData.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 50px;">Нет данных</p>';
+                return;
+            }
+            const chartHTML = hygieneData.map((week, index) => {
+                const height = Math.max((week.percentage / 100) * 250, 30);
+                const color = week.percentage >= 80 ? '#28a745' : week.percentage >= 60 ? '#ffc107' : '#dc3545';
+                let diffHTML = '';
+                if (index > 0) {
+                    const diff = week.percentage - hygieneData[index - 1].percentage;
+                    const arrow = diff >= 0 ? '↑' : '↓';
+                    const diffClass = diff >= 0 ? 'positive' : 'negative';
+                    diffHTML = `<div class="chart-diff ${diffClass}">${arrow} ${Math.abs(diff)}%</div>`;
+                }
+                return `
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar" style="background: ${color}; height: ${height}px;">
+                            ${diffHTML}
+                            <div class="chart-value">${week.percentage}%</div>
+                        </div>
+                        <div class="chart-label">${week.week}</div>
+                    </div>
+                `;
+            }).join('');
+            container.innerHTML = `<div style="display: flex; align-items: flex-end; justify-content: center; height: 300px; padding-top: 30px;">${chartHTML}</div>`;
+        }
+
+        function renderAccuracyWeeks() {
+            const container = document.getElementById('accuracyWeeks');
+            container.innerHTML = accuracyData.map((week, index) => `
+                <div class="week-entry">
+                    <input type="text" value="${week.week}" onchange="updateAccuracyWeek(${index}, 'week', this.value)" placeholder="Неделя">
+                    <input type="number" value="${week.percentage}" onchange="updateAccuracyWeek(${index}, 'percentage', this.value)" placeholder="%" min="0" max="100">
+                    <button class="delete-week-btn" onclick="deleteAccuracyWeek(${index})">🗑️</button>
+                </div>
+            `).join('');
+            renderAccuracyChart();
+        }
+
+        function addAccuracyWeek() {
+            if (isViewOnlyMode) return;
+            accuracyData.push({ week: '', percentage: 0 });
+            renderAccuracyWeeks();
+            saveToCloud();
+        }
+
+        function deleteAccuracyWeek(index) {
+            if (isViewOnlyMode) return;
+            if (confirm('Удалить эту неделю?')) {
+                accuracyData.splice(index, 1);
+                renderAccuracyWeeks();
+                updateGoals();
+                saveToCloud();
+            }
+        }
+
+        function updateAccuracyWeek(index, field, value) {
+            if (isViewOnlyMode) return;
+            accuracyData[index][field] = field === 'percentage' ? parseInt(value) || 0 : value;
+            renderAccuracyWeeks();
+            updateGoals();
+            saveToCloud();
+        }
+
+        function renderAccuracyChart() {
+            const container = document.getElementById('accuracyChart');
+            if (accuracyData.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 50px;">Нет данных</p>';
+                return;
+            }
+            const chartHTML = accuracyData.map((week, index) => {
+                const height = Math.max((week.percentage / 100) * 250, 30);
+                const color = week.percentage >= 90 ? '#28a745' : week.percentage >= 75 ? '#ffc107' : '#dc3545';
+                let diffHTML = '';
+                if (index > 0) {
+                    const diff = week.percentage - accuracyData[index - 1].percentage;
+                    const arrow = diff >= 0 ? '↑' : '↓';
+                    const diffClass = diff >= 0 ? 'positive' : 'negative';
+                    diffHTML = `<div class="chart-diff ${diffClass}">${arrow} ${Math.abs(diff)}%</div>`;
+                }
+                return `
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar" style="background: ${color}; height: ${height}px;">
+                            ${diffHTML}
+                            <div class="chart-value">${week.percentage}%</div>
+                        </div>
+                        <div class="chart-label">${week.week}</div>
+                    </div>
                 `;
             }).join('');
             container.innerHTML = `<div style="display: flex; align-items: flex-end; justify-content: center; height: 300px; padding-top: 30px;">${chartHTML}</div>`;
@@ -871,26 +1040,22 @@ function renderHygieneChart() {
         function updateGoals() {
             // Цель 1
             const connectedCount = employees.filter(e => e.connected).length;
-            const connectionPct = employees.length ? (connectedCount / employees.length) * 100 : 0;
-
+            const connectionPct = employees.length > 0 ? (connectedCount / employees.length) * 100 : 0;
+            
             const connectedEmps = employees.filter(e => e.connected);
             const withDataCount = connectedEmps.filter(e => e.hasData).length;
-            const withDataPct = connectedEmps.length ? (withDataCount / connectedEmps.length) * 100 : 0;
-
-            const hygienePct = hygieneData.length ? Math.min(hygieneData[hygieneData.length - 1].percentage || 0, 100) : 0;
-
-            document.getElementById('goal1crit1Progress').textContent = Math.round(withDataPct) + '%';
-            document.getElementById('goal1crit1Bar').style.width = withDataPct + '%';
-            document.getElementById('goal1crit1Bar').textContent = Math.round(withDataPct) + '%';
-
-            document.getElementById('goal1crit2Progress').textContent = Math.round(hygienePct) + '%';
-            document.getElementById('goal1crit2Bar').style.width = hygienePct + '%';
-            document.getElementById('goal1crit2Bar').textContent = Math.round(hygienePct) + '%';
-
+            const withDataPct = connectedEmps.length > 0 ? (withDataCount / connectedEmps.length) * 100 : 0;
+            
+            document.getElementById('goal1_crit1Progress').textContent = Math.round(withDataPct) + '%';
+            document.getElementById('goal1_crit1Bar').style.width = withDataPct + '%';
+            
+            const hygienePct = hygieneData.length > 0 ? Math.min(hygieneData[hygieneData.length - 1].percentage, 100) : 0;
+            document.getElementById('goal1_crit2Progress').textContent = Math.round(hygienePct) + '%';
+            document.getElementById('goal1_crit2Bar').style.width = hygienePct + '%';
+            
             const goal1Pct = (connectionPct + withDataPct + hygienePct) / 3;
             document.getElementById('goal1Progress').textContent = Math.round(goal1Pct) + '%';
             document.getElementById('goal1Bar').style.width = goal1Pct + '%';
-            document.getElementById('goal1Bar').textContent = Math.round(goal1Pct) + '%';
 
             // Цель 2
             const textRec = document.getElementById('text_recognition').checked;
@@ -959,27 +1124,27 @@ function renderHygieneChart() {
         }
 
         async function init() {
-    checkViewOnlyMode();
-    await loadFromCloud();
-    renderEmployees();
-    renderConnectedEmployees();
-    renderHygieneWeeks();
-    renderAccuracyWeeks();
-    updateGoals();
-}
+            checkViewOnlyMode();
+            await loadFromCloud();
+            renderEmployees();
+            renderConnectedEmployees();
+            renderHygieneWeeks();
+            renderAccuracyWeeks();
+            updateGoals();
+        }
 
-init();
+        init();
 
-if (isViewOnlyMode) {
-    setInterval(async () => {
-        await loadFromCloud();
-        renderEmployees();
-        renderConnectedEmployees();
-        renderHygieneWeeks();
-        renderAccuracyWeeks();
-        updateGoals();
-    }, 10000); // Обновление каждые 10 секунд
-}
+        if (isViewOnlyMode) {
+            setInterval(async () => {
+                await loadFromCloud();
+                renderEmployees();
+                renderConnectedEmployees();
+                renderHygieneWeeks();
+                renderAccuracyWeeks();
+                updateGoals();
+            }, 10000);
+        }
     </script>
 </body>
 </html>
